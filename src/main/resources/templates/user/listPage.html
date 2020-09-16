@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>后台管理系统</title>
+<link rel="stylesheet" href="/js/layui/css/layui.css">
+<script src="/js/layui/layui.js"></script>
+</head>
+<body>
+	<form class="layui-form">
+		<div class="layui-form-item">
+			<label class="layui-form-label">姓名</label>
+			<div class="layui-input-inline">
+				<input type="text" name="userName" 
+					placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+			<label class="layui-form-label">ID</label>
+			<div class="layui-input-inline">
+				<input type="text" name="userId"
+					placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="submitButton">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+	<table id="tableEle" class="layui-table" lay-filter="tableEle">
+	</table>
+
+	<script type="text/html" id="tableButton">
+		<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+	</script>
+
+	<script>
+		//Demo
+		layui.use([ 'form', 'jquery', 'table' ],function() {
+				var $ = layui.jquery, form = layui.form, layer = layui.layer, table = layui.table;
+
+				//监听提交
+				form.on('submit(submitButton)', function(data1) {
+					data1 = data1.field;
+					$.ajax({
+						url : "/user/list",
+						contentType : 'application/json',
+						data : JSON.stringify({
+							"pageSize" : 10,
+							"pageNum" : 1,
+							"condition" : {
+								"userId" : data1.userId,
+								"userName" : data1.userName
+							}
+						}),
+						type : "POST",
+						dataType : "json",
+						success : function(data2) {
+							if (data2.code == 0) {
+								//第一个实例
+								table.render({
+									elem : '#tableEle',
+									height : 312,
+									//开启分页
+									page : true, 
+									//标题栏
+									cols : [
+											[{field: 'userId', title: 'ID'}
+									    	,{field: 'userName', title: '用户名'}
+									    	,{fixed: 'right', width:200, align:'center', toolbar: '#tableButton'}
+									  		]
+										],
+									data : data2.list
+								});
+							} else {
+								layer.alert(data2.msg, function() {
+									layer.closeAll();//关闭所有弹框
+								});
+							}
+						}
+					});
+
+					return false;
+				});
+				
+				table.on('tool(tableEle)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+					  var data = obj.data; //获得当前行数据
+					  var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+					  var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+					 
+					  if(layEvent === 'detail'){ //查看
+						  layer.msg('detail'+data.userId);
+						  layer.open({
+							  type: 2, 
+							  content: '/user/detail/'+data.userId //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+							}); 
+					  } else if(layEvent === 'del'){ //删除
+					    layer.confirm('真的删除行么', function(index){
+					      obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+					      layer.close(index);
+					      //向服务端发送删除指令
+					    });
+					  } else if(layEvent === 'edit'){ //编辑
+						  layer.msg('edit'+data.userId);
+						  layer.open({
+							  type: 2, 
+							  content: '/user/edit/'+data.userId //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+							}); 
+
+					  } else if(layEvent === 'LAYTABLE_TIPS'){
+					    layer.alert('Hi，头部工具栏扩展的右侧图标。');
+					  }
+					});
+			});
+	</script>
+</body>
+</html>

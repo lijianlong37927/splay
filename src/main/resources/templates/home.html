@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
+    <script src="/js/layui/layui.js"></script>
+    <script src="/js/jquery/jquery-3.3.1.min.js"></script>
+    <style>
+        /*对layui中的样式进行重写*/
+        .layui-tab-content {
+            padding: 0;/*layui-tab-content:默认有padding: 10px;的值，因为iframe的绝对定位脱离文档流，所以会存在20px的空白空间*/
+        }
+        .show-frame {
+            top: 50px!important;
+            /*默认.layui-layout-admin .layui-body {
+                top: 60px;
+                bottom: 44px;
+            }*/
+            overflow: hidden;/*消除浏览器最右边的滚动条*/
+        }
+        .frame {
+            position: absolute;
+            padding: 10px;/*与layui-footer隔开一段距离*/
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">后台管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="">控制台<span class="layui-badge">9</span></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="">个人中心<span class="layui-badge-dot"></span></a>
+            </li>
+            <li class="layui-nav-item" lay-unselect="">
+                <a href="javascript:;"><img src="" class="layui-nav-img">我</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">修改信息</a></dd>
+                    <dd><a href="javascript:;">安全管理</a></dd>
+                    <dd><a href="javascript:;">退了</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test" id="menuNavTree">
+<!--                 <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">模块管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" name="t1" id="1" title="科室管理" content="/test1">科室管理</a></dd>
+                        <dd><a href="javascript:;" name="t1" id="2" title="科室管理" content="/test1">文章列表</a></dd>
+                        <dd><a href="javascript:;" name="t1" id="3" title="科室管理" content="/test1">类别管理</a></dd>
+                    </dl>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body show-frame">
+        <div class="layui-tab layui-tab-brief" lay-filter="empTab" lay-allowClose="true">
+        <ul class="layui-tab-title">
+            <li class="layui-this "><i class="layui-icon">&#xe68e;</i></li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show"><h1 style="color: #5FB878">欢迎登录后台管理系统</h1></div>
+        </div>
+    </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+<script>
+layui.use('element',
+		function() {
+		    layui.jquery.ajax({
+		        type: "post",
+		        url: "menuList",
+		        dataType: "json",
+		        /*data: {// 传给servlet的数据,
+				            role_id: MenuHid,
+				            right_code: "-1",
+				            d: new Date()
+				        },*/
+		        success: function(dataResp) {
+		            var menuItemList = dataResp.data;
+		            var t = 0;
+		            var menuHtml = '';
+		            for (var i = 0; i < menuItemList.length; i++) { //主菜单的数据
+		                var menuItem = menuItemList[i];
+		                menuHtml += '<li class="layui-nav-item layui-nav-itemed">' + '<a class="" href="javascript:;" name="menu" menuUrl="' + menuItem.url + '" id="' + menuItem.menuId + '" title="' + menuItem.title + '" >' + menuItem.title + '</a>';
+		                var child = menuItem.child;
+		                if (child.length > 0) {
+		                    menuHtml += '<dl class="layui-nav-child">';
+		                    for (var j = 0; j < child.length; j++) { //二级菜单的数据 如果你有三级菜单的话 我就没法了 
+		                        var childItem = child[j];
+		                        menuHtml += '<dd><a href="javascript:addTab(\'' + childItem.menuId + '\',\'' + childItem.title + '\',\'' + childItem.url + '\')" name="menu" menuUrl="' + childItem.url + '" id="' + childItem.menuId + '" title="' + childItem.title + '" >' + childItem.title + '</a></dd>';
+		                    }
+		                    menuHtml += '</dl>';
+		                }
+		                menuHtml += '</li>';
+		            }
+		            layui.jquery("#menuNavTree").html(menuHtml);
+		            layui.element.init();
+		        }
+		    });
+		});
+	
+function addTab(id, title, menuUrl) {
+    if ($("li[lay-id=" + id + "]").length == 0) {
+        layui.element.tabAdd("empTab", {
+            title: title,
+            content: "<iframe src='" + menuUrl + "' class='frame' frameborder='0'></iframe>",
+            id: id
+        })
+    }
+    layui.element.tabChange('empTab', id)
+}
+
+</script>
+</body>
+</body>
+</html>

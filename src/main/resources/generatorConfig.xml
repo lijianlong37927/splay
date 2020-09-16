@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!-- <context id="dsql" targetRuntime="MyBatis3DynamicSql"> -->
+	<context id="dsql" targetRuntime="MyBatis3Simple">
+
+		<plugin type="com.yumu.code.GenUpdateSelectivePlugin" />
+
+		<jdbcConnection
+			connectionURL="jdbc:mysql://127.0.0.1:3307/qqodb?serverTimezone=UTC"
+			driverClass="com.mysql.cj.jdbc.Driver" password="passw0rd"
+			userId="qqouser" />
+
+
+
+		<!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 
+			和 NUMERIC 类型解析为java.math.BigDecimal -->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- targetProject:生成PO类的位置 -->
+		<javaModelGenerator targetPackage="com.yumu.dto"
+			targetProject="demo/src/main/java">
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="com.yumu.mapper"
+			targetProject="demo/src/main/resources" />
+
+		<!-- targetPackage：mapper接口生成的位置 -->
+		<javaClientGenerator
+			targetPackage="com.yumu.mapper" targetProject="demo/src/main/java"
+			type="XMLMAPPER">
+		</javaClientGenerator>
+
+		<table tableName="user_info"></table>
+		<!-- <table tableName="menu_url"></table> -->
+		<!-- <table tableName="user_role"></table> -->
+
+	</context>
+</generatorConfiguration>

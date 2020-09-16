@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>后台管理系统</title>
+<link rel="stylesheet" href="/js/layui/css/layui.css">
+<script src="/js/layui/layui.js"></script>
+</head>
+<body>
+	<form class="layui-form">
+		<div class="layui-form-item">
+			<label class="layui-form-label">姓名</label>
+			<div class="layui-input-inline">
+				<input type="text" name="userName" 
+					placeholder="请输入" autocomplete="off" class="layui-input" readonly>
+			</div>
+			<label class="layui-form-label">ID</label>
+			<div class="layui-input-inline">
+				<input type="text" name="userId"
+					placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="submitButton">保存</button>
+				<button type="reset" class="layui-btn layui-btn-primary">取消</button>
+			</div>
+		</div>
+	</form>
+
+	<script>
+		//Demo
+		layui.use([ 'form', 'jquery', 'table' ],function() {
+				var $ = layui.jquery, form = layui.form, layer = layui.layer;
+
+				//监听提交
+				form.on('submit(submitButton)', function(data1) {
+					data1 = data1.field;
+					$.ajax({
+						url : "/user/edit",
+						contentType : 'application/json',
+						data : JSON.stringify({
+								"userId" : data1.userId,
+								"userName" : data1.userName
+							}),
+						type : "POST",
+						dataType : "json",
+						success : function(data2) {
+							if (data2.code == 0) {
+								layer.msg('保存成功', {
+									  icon: 1,
+									  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+									}
+							} else {
+								layer.alert(data2.msg, function() {
+									layer.closeAll();//关闭所有弹框
+								});
+							}
+						}
+					});
+
+					return false;
+				});
+				
+				
+			});
+	</script>
+</body>
+</html>
