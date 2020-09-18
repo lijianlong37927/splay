@@ -12,4 +12,5 @@ public class LocalContext {
 	public static RequestContext getRequestContext() {
 		return threadLocal.get();
 	}
+
 }

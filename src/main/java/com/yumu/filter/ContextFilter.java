@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import com.yumu.context.LocalContext;
-import com.yumu.context.request.NormalRequestContext;
+import com.yumu.context.request.SessionRequestContext;
+import com.yumu.init.LocalConfig;
 import com.yumu.context.request.RequestContext;
 
 @Order(0)
@@ -24,10 +25,12 @@ public class ContextFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
 			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		HttpServletResponse response = (HttpServletResponse) servletResponse;
-		RequestContext requestContext = new NormalRequestContext(request, response);
-		LocalContext.setRequestContext(requestContext);
+		if ("0".equals(LocalConfig.getStoreType())) {
+			HttpServletRequest request = (HttpServletRequest) servletRequest;
+			HttpServletResponse response = (HttpServletResponse) servletResponse;
+			RequestContext requestContext = new SessionRequestContext(request, response);
+			LocalContext.setRequestContext(requestContext);
+		}
 		chain.doFilter(servletRequest, servletResponse);
 	}
 

@@ -44,7 +44,7 @@ public class UserInfoService {
 	}
 
 	@Transactional(rollbackFor = { Exception.class })
-	public void edit(DetailEditReq req) {
+	public void editSubmit(DetailEditReq req) {
 		// 设置参数
 		UserInfo userInfoUpd = new UserInfo();
 		userInfoUpd.setUserId(req.getUserId());
@@ -55,6 +55,15 @@ public class UserInfoService {
 
 	public UserInfo getUserInfoById(String userId) {
 		return userInfoMapper.selectByPrimaryKey(userId);
+	}
+
+	public void delSubmit(DetailEditReq req) {
+		// 设置参数
+		UserInfo userInfoUpd = new UserInfo();
+		userInfoUpd.setUserId(req.getUserId());
+		userInfoUpd.setStatus(UserInfoConst.STATUS_1);
+		// 更新
+		userInfoMapper.updateByPrimaryKeySelective(userInfoUpd);
 	}
 
 }

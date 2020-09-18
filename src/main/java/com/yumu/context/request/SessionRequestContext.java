@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class NormalRequestContext implements RequestContext {
+public class SessionRequestContext implements RequestContext {
 
 	private HttpServletRequest request = null;
 	private HttpServletResponse response = null;
@@ -12,7 +12,7 @@ public class NormalRequestContext implements RequestContext {
 
 	private static final String USER_ID = "USER_ID";
 
-	public NormalRequestContext(HttpServletRequest request, HttpServletResponse response) {
+	public SessionRequestContext(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
 		this.session = request.getSession();

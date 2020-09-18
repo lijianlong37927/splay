@@ -54,10 +54,11 @@ public class TokenFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		String path = request.getRequestURI();
-		logger.info("address:[{}],path:[{}]", request.getRemoteAddr(), path);
+
 		if (ALLOWED_PATHS.contains(path) || checkStaticFile(path)) {
 			chain.doFilter(servletRequest, servletResponse);
 		} else {
+			logger.info("address:[{}],path:[{}]", request.getRemoteAddr(), path);
 			String userId = LocalContext.getRequestContext().getUserId();
 			if (StringUtils.isBlank(userId)) {
 				response.sendRedirect(request.getContextPath());

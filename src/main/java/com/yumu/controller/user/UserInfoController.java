@@ -39,20 +39,29 @@ public class UserInfoController {
 	public String detailPage(@RequestBody DetailCheckReq req, Model model) {
 		UserInfo userInfo = userInfoService.getUserInfoById(req.getUserId());
 		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("showButton", "0");
 		return "/user/detailPage";
 	}
-	
+
 	@RequestMapping("/detail/edit/page")
 	public String editPage(@RequestBody DetailCheckReq req, Model model) {
 		UserInfo userInfo = userInfoService.getUserInfoById(req.getUserId());
 		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("showSubmitButton", "1");
 		return "/user/detailPage";
 	}
 
 	@PostMapping("/detail/edit/submit")
 	@ResponseBody
 	public Response<Void> editSubmit(@RequestBody DetailEditReq req) {
-		userInfoService.edit(req);
+		userInfoService.editSubmit(req);
+		return Response.success();
+	}
+
+	@PostMapping("/detail/del/submit")
+	@ResponseBody
+	public Response<Void> delSubmit(@RequestBody DetailEditReq req) {
+		userInfoService.delSubmit(req);
 		return Response.success();
 	}
 }
