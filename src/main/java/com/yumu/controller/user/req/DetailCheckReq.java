@@ -1,6 +1,6 @@
 package com.yumu.controller.user.req;
 
-public class UserInfoListReq {
+public class DetailCheckReq {
 
 	private String userId;
 	private String userName;

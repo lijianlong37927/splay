@@ -1,6 +1,6 @@
 package com.yumu.controller.user.resp;
 
-public class UserInfoListResp {
+public class UserInfoListQueryResp {
 
 	private String userId;
 	private String userName;

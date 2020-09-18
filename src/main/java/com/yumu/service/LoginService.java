@@ -4,15 +4,14 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.yumu.constant.UserInfoConst;
 import com.yumu.context.LocalContext;
 import com.yumu.controller.login.resp.MenuResp;
-import com.yumu.dto.UserInfo;
+import com.yumu.dto.UserInfoExample;
 import com.yumu.exception.ExceptionConst;
 import com.yumu.exception.ServiceException;
-import com.yumu.mapper.MenuInfoMapper;
 import com.yumu.mapper.UserInfoMapper;
+import com.yumu.mapper.ex.MenuInfoMapperEx;
 import com.yumu.tool.EncryptTool;
 
 @Service
@@ -22,7 +21,7 @@ public class LoginService {
 	private UserInfoMapper userInfoMapper;
 
 	@Autowired
-	private MenuInfoMapper menuInfoMapper;
+	private MenuInfoMapperEx menuInfoMapperEx;
 
 	/**
 	 * <p>Title: login</p>
@@ -33,12 +32,14 @@ public class LoginService {
 	 */
 	public void login(String userId, String password) {
 		try {
+			// 密码转换
 			String passwordChg = EncryptTool.sha1Hex(userId + password);
-			UserInfo userInfoQry = new UserInfo();
-			userInfoQry.setUserId(userId);
-			userInfoQry.setPassword(passwordChg);
-			userInfoQry.setStatus(UserInfoConst.STATUS_0);
-			if (CollectionUtils.isNotEmpty(userInfoMapper.select(userInfoQry))) {
+			// 查询条件
+			UserInfoExample userInfoEp = new UserInfoExample();
+			userInfoEp.createCriteria().andUserIdEqualTo(userId).andPasswordEqualTo(passwordChg)
+					.andStatusEqualTo(UserInfoConst.STATUS_0);
+			// 查询结果判断
+			if (CollectionUtils.isNotEmpty(userInfoMapper.selectByExample(userInfoEp))) {
 				LocalContext.getRequestContext().setUserId(userId);
 			} else {
 				ServiceException.throwException(ExceptionConst.CHECK_LOGIN_ERROR);
@@ -58,7 +59,7 @@ public class LoginService {
 	 */
 	public List<MenuResp> menuList(String userId) {
 		try {
-			return menuInfoMapper.qryMenuList(userId);
+			return menuInfoMapperEx.qryMenuList(userId);
 		} catch (ServiceException serEx) {
 			throw serEx;
 		} catch (Exception ex) {

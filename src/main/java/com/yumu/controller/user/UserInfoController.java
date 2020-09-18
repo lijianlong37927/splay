@@ -2,6 +2,7 @@ package com.yumu.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,9 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yumu.controller.RequestPage;
 import com.yumu.controller.Response;
 import com.yumu.controller.ResponsePage;
-import com.yumu.controller.user.req.UserInfoEditReq;
-import com.yumu.controller.user.req.UserInfoListReq;
-import com.yumu.controller.user.resp.UserInfoListResp;
+import com.yumu.controller.user.req.DetailCheckReq;
+import com.yumu.controller.user.req.DetailEditReq;
+import com.yumu.controller.user.req.ListQueryReq;
+import com.yumu.controller.user.resp.UserInfoListQueryResp;
+import com.yumu.dto.UserInfo;
 import com.yumu.service.UserInfoService;
 
 @Controller
@@ -21,25 +24,34 @@ public class UserInfoController {
 	@Autowired
 	private UserInfoService userInfoService;
 
-	@RequestMapping("/listPage")
+	@RequestMapping("/list/page")
 	public String listPage() {
 		return "/user/listPage";
 	}
 
-	@PostMapping("/list")
+	@PostMapping("/list/query")
 	@ResponseBody
-	public ResponsePage<UserInfoListResp> list(@RequestBody RequestPage<UserInfoListReq> page) {
-		return userInfoService.list(page);
+	public ResponsePage<UserInfoListQueryResp> listQuery(@RequestBody RequestPage<ListQueryReq> page) {
+		return userInfoService.listQuery(page);
 	}
 
-	@RequestMapping("/detailPage")
-	public String detailPage() {
+	@RequestMapping("/detail/check/page")
+	public String detailPage(@RequestBody DetailCheckReq req, Model model) {
+		UserInfo userInfo = userInfoService.getUserInfoById(req.getUserId());
+		model.addAttribute("userInfo", userInfo);
+		return "/user/detailPage";
+	}
+	
+	@RequestMapping("/detail/edit/page")
+	public String editPage(@RequestBody DetailCheckReq req, Model model) {
+		UserInfo userInfo = userInfoService.getUserInfoById(req.getUserId());
+		model.addAttribute("userInfo", userInfo);
 		return "/user/detailPage";
 	}
 
-	@PostMapping("/edit")
+	@PostMapping("/detail/edit/submit")
 	@ResponseBody
-	public Response<Void> list(@RequestBody UserInfoEditReq req) {
+	public Response<Void> editSubmit(@RequestBody DetailEditReq req) {
 		userInfoService.edit(req);
 		return Response.success();
 	}

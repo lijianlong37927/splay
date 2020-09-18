@@ -1,6 +1,6 @@
 package com.yumu.controller.user.req;
 
-public class UserInfoEditReq {
+public class DetailEditReq {
 
 	private String userId;
 	private String userName;
