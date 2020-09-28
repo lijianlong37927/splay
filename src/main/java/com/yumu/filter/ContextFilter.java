@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.yumu.context.LocalContext;
 import com.yumu.context.request.SessionRequestContext;
 import com.yumu.init.LocalConfig;
+import com.yumu.context.request.RedisRequestContext;
 import com.yumu.context.request.RequestContext;
 
 @Order(0)
@@ -29,6 +30,11 @@ public class ContextFilter implements Filter {
 			HttpServletRequest request = (HttpServletRequest) servletRequest;
 			HttpServletResponse response = (HttpServletResponse) servletResponse;
 			RequestContext requestContext = new SessionRequestContext(request, response);
+			LocalContext.setRequestContext(requestContext);
+		} else {
+			HttpServletRequest request = (HttpServletRequest) servletRequest;
+			HttpServletResponse response = (HttpServletResponse) servletResponse;
+			RequestContext requestContext = new RedisRequestContext(request, response);
 			LocalContext.setRequestContext(requestContext);
 		}
 		chain.doFilter(servletRequest, servletResponse);

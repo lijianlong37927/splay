@@ -1,39 +1,48 @@
 package com.yumu.context.request;
 
+import java.util.UUID;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.yumu.tool.EncryptTool;
+import com.yumu.tool.RedisTool;
 
 public class RedisRequestContext implements RequestContext {
 
+	private static final Logger logger = LoggerFactory.getLogger(RedisRequestContext.class);
+
+	private static final String TOKEN = "token";
+
 	private HttpServletRequest request = null;
 	private HttpServletResponse response = null;
-	private HttpSession session = null;
-
-	private static final String USER_ID = "USER_ID";
+	private String token = null;
 
 	public RedisRequestContext(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
-		this.session = request.getSession();
+		token = request.getHeader(TOKEN);
 	}
 
 	@Override
 	public String getUserId() {
-		if (session == null || session.getAttribute(USER_ID) == null) {
-			return null;
-		}
-		return (String) session.getAttribute(USER_ID);
+		return RedisTool.get(token);
 	}
 
 	@Override
 	public void setUserId(String userId) {
-		if (session == null) {
-			session = request.getSession(true);
-			session.setMaxInactiveInterval(60 * 15);
+		try {
+			if (token == null) {
+				token = EncryptTool.sha1Hex(UUID.randomUUID().toString());
+			}
+			RedisTool.setIfAbsent(token, userId, 60 * 15);
+			Cookie cookie = new Cookie(TOKEN, token);
+			response.addCookie(cookie);
+		} catch (Exception e) {
+			logger.error("setUserId error", e);
 		}
-		session.setAttribute(USER_ID, userId);
-
 	}
 
 	public HttpServletRequest getRequest() {
@@ -42,10 +51,6 @@ public class RedisRequestContext implements RequestContext {
 
 	public HttpServletResponse getResponse() {
 		return response;
-	}
-
-	public HttpSession getSession() {
-		return session;
 	}
 
 }

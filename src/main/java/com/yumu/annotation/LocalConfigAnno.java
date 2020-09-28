@@ -14,4 +14,11 @@ public @interface LocalConfigAnno {
 	 * @return
 	 */
 	String storeType() default "0";
+
+	/**
+	 * <p>Title: checkPath</p>
+	 * <p>Description: 是否校验请求路径。如果是，则需要数据库配置请求的路径权限</p>
+	 * @return
+	 */
+	String checkPath() default "1";
 }

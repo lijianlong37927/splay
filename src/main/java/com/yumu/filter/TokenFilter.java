@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import com.yumu.context.LocalContext;
 import com.yumu.exception.ExceptionConst;
+import com.yumu.init.LocalConfig;
 import com.yumu.service.MenuUrlService;
 
 @Order(1)
@@ -62,7 +63,7 @@ public class TokenFilter implements Filter {
 			String userId = LocalContext.getRequestContext().getUserId();
 			if (StringUtils.isBlank(userId)) {
 				response.sendRedirect(request.getContextPath());
-			} else if (checkAuth(userId, path)) {
+			} else if (LocalConfig.isCheckPath() && checkPath(userId, path)) {
 				chain.doFilter(servletRequest, servletResponse);
 			} else {
 				request.setAttribute("ERROR_MSG_CONST", ExceptionConst.NO_AUTH);
@@ -81,7 +82,7 @@ public class TokenFilter implements Filter {
 		return false;
 	}
 
-	private boolean checkAuth(String userId, String path) {
+	private boolean checkPath(String userId, String path) {
 		if (COMMOND_PATHS.contains(path)) {
 			return true;
 		}

@@ -14,6 +14,9 @@ public class LocalConfig implements CommandLineRunner {
 	/** 登录信息存储类型,0:内存;1:redis*/
 	private static String storeType;
 
+	/** 是否校验请求路径,0:否;1:是*/
+	private static String checkPath;
+
 	@Override
 	public void run(String... args) throws Exception {
 		logger.info("Init LocalConfig begin");
@@ -27,4 +30,11 @@ public class LocalConfig implements CommandLineRunner {
 		return storeType;
 	}
 
+	public static String getCheckPath() {
+		return checkPath;
+	}
+
+	public static boolean isCheckPath() {
+		return "1".equals(checkPath);
+	}
 }
