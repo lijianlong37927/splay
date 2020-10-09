@@ -63,7 +63,7 @@ public class TokenFilter implements Filter {
 			String userId = LocalContext.getRequestContext().getUserId();
 			if (StringUtils.isBlank(userId)) {
 				response.sendRedirect(request.getContextPath());
-			} else if (LocalConfig.isCheckPath() && checkPath(userId, path)) {
+			} else if (checkPath(userId, path)) {
 				chain.doFilter(servletRequest, servletResponse);
 			} else {
 				request.setAttribute("ERROR_MSG_CONST", ExceptionConst.NO_AUTH);
@@ -73,6 +73,12 @@ public class TokenFilter implements Filter {
 		}
 	}
 
+	/**
+	 * <p>Title: checkStaticFile</p>
+	 * <p>Description: 判断是否静态资源</p>
+	 * @param path
+	 * @return
+	 */
 	private boolean checkStaticFile(String path) {
 		for (String str : STATIC_PATHS) {
 			if (StringUtils.isNotBlank(path) && path.startsWith(str)) {
@@ -83,7 +89,10 @@ public class TokenFilter implements Filter {
 	}
 
 	private boolean checkPath(String userId, String path) {
-		if (COMMOND_PATHS.contains(path)) {
+		if (!LocalConfig.isCheckPath()) {// 不需要校验路径
+			return true;
+		}
+		if (COMMOND_PATHS.contains(path)) {// 公共路径
 			return true;
 		}
 		if (CollectionUtils.isEmpty(menuUrlService.qryAuthUrl(userId, path))) {

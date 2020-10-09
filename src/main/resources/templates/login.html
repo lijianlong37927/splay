@@ -33,7 +33,7 @@
 	<div class="container">
 		<div>系统登录</div>
 		<hr>
-		<form class="layui-form" action="" id="loginForm">
+		<form class="layui-form" action="" id="loginForm" >
 			<div class="layui-form-item">
 				<label class="layui-form-label">输入框</label>
 				<div class="layui-input-block">
@@ -50,7 +50,7 @@
 			</div>
 			<div class="layui-form-item">
 				<div class="layui-input-block">
-					<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+					<button class="layui-btn" lay-submit lay-filter="submitButton">立即提交</button>
 					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 				</div>
 			</div>
@@ -64,7 +64,7 @@
 			//if (top.location != self.location) top.location = self.location;
 
 			// 进行登录操作
-			form.on('submit(login)', function(data) {
+			form.on('submit(submitButton)', function(data) {
 				data = data.field;
 				$.ajax({
 					url : "/login",

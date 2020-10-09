@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 16/09/2020 18:13:32
+ Date: 29/09/2020 08:49:55
 */
 
 SET NAMES utf8mb4;
@@ -40,7 +40,7 @@ CREATE TABLE `menu_info`  (
 -- Records of menu_info
 -- ----------------------------
 INSERT INTO `menu_info` VALUES ('M01', '系统管理', NULL, NULL, 1, 0, 0, NULL, '2020-09-14 10:00:42', NULL, '2020-09-15 10:22:37');
-INSERT INTO `menu_info` VALUES ('M0101', '用户管理', '/user/listPage', 'M01', 2, 0, 0, NULL, '2020-09-14 09:19:34', NULL, '2020-09-16 09:34:40');
+INSERT INTO `menu_info` VALUES ('M0101', '用户管理', '/user/list/page', 'M01', 2, 0, 0, NULL, '2020-09-14 09:19:34', NULL, '2020-09-18 09:45:01');
 
 -- ----------------------------
 -- Table structure for menu_url
@@ -60,10 +60,12 @@ CREATE TABLE `menu_url`  (
 -- ----------------------------
 -- Records of menu_url
 -- ----------------------------
-INSERT INTO `menu_url` VALUES ('M0101', '/user/detail', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `menu_url` VALUES ('M0101', '/user/edit', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `menu_url` VALUES ('M0101', '/user/list', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `menu_url` VALUES ('M0101', '/user/listPage', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/check/page', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/del/submit', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/edit/page', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/edit/submit', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `menu_url` VALUES ('M0101', '/user/list/page', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `menu_url` VALUES ('M0101', '/user/list/query', 0, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for role_menu
@@ -106,7 +108,7 @@ CREATE TABLE `user_info`  (
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
-INSERT INTO `user_info` VALUES ('U000001', 'ceshi222', 'a87fdcec6ad026d253b2a45a800a7e569bbff6c6', 0, NULL, '2019-09-12 15:50:40', NULL, '2020-09-14 09:56:00');
+INSERT INTO `user_info` VALUES ('U000001', 'ceshi22211', 'a87fdcec6ad026d253b2a45a800a7e569bbff6c6', 1, NULL, '2019-09-12 15:50:40', NULL, '2020-09-18 15:49:41');
 INSERT INTO `user_info` VALUES ('U000002', 'ceshi02', NULL, NULL, NULL, '2020-07-14 13:38:35', NULL, '2020-07-14 13:39:02');
 INSERT INTO `user_info` VALUES ('U000003', 'ceshi03', NULL, NULL, NULL, '2020-07-14 13:39:29', NULL, NULL);
 INSERT INTO `user_info` VALUES ('U000004', 'ceshi04', NULL, NULL, NULL, '2020-07-14 13:39:39', NULL, NULL);

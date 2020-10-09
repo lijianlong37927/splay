@@ -24,13 +24,14 @@
 
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button class="layui-btn" lay-submit lay-filter="submitButton">立即提交</button>
+				<button type="submit" class="layui-btn" lay-submit lay-filter="submitButton">立即提交</button>
 				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 			</div>
 		</div>
 	</form>
-	<table id="tableEle" class="layui-table" lay-filter="tableEle">
+	<table id="tableEle" class="layui-table" lay-filter="tableEle">	
 	</table>
+	<div id="tablePage"></div>
 
 	<script type="text/html" id="tableButton">
 		<a class="layui-btn layui-btn-xs" lay-event="check">查看</a>
@@ -40,9 +41,15 @@
 
 	<script>
 		//Demo
-		layui.use([ 'form', 'jquery', 'table' ],function() {
-				var $ = layui.jquery, form = layui.form, layer = layui.layer, table = layui.table;
+		layui.use([ 'form', 'jquery', 'table','laypage' ],function() {
+				var $ = layui.jquery, 
+				form = layui.form, 
+				layer = layui.layer, 
+				table = layui.table,
+				laypage = layui.laypage;
 
+				var pageSize=10,pageNum=1;
+				
 				//监听提交
 				form.on('submit(submitButton)', function(data1) {
 					data1 = data1.field;
@@ -50,8 +57,8 @@
 						url : "/user/list/query",
 						contentType : 'application/json',
 						data : JSON.stringify({
-							"pageSize" : 10,
-							"pageNum" : 1,
+							"pageSize" : pageSize,
+							"pageNum" : pageNum,
 							"condition" : {
 								"userId" : data1.userId,
 								"userName" : data1.userName
@@ -65,8 +72,7 @@
 								table.render({
 									elem : '#tableEle',
 									height : 312,
-									//开启分页
-									page : true, 
+									//page: true,
 									//标题栏
 									cols : [
 											[{field: 'userId', title: 'ID'}
@@ -76,6 +82,25 @@
 										],
 									data : data2.list
 								});
+								//执行一个laypage实例
+								laypage.render({
+									elem: 'tablePage', //注意，这里的 test1 是 ID，不用加 # 号
+									count: data2.total, //数据总数，从服务端得到
+									curr: data2.pageNum,
+									jump: function(obj, first){
+									    //obj包含了当前分页的所有参数，比如：
+									    console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+									    console.log(obj.limit); //得到每页显示的条数
+									    pageSize=obj.limit;
+									    pageNum=obj.curr;
+									    $("#submitButton").click();
+									    //首次不执行
+									    if(!first){
+									      //do something
+									    }
+									  }
+								});
+									
 							} else {
 								layer.alert(data2.msg, function() {
 									layer.closeAll();//关闭所有弹框
