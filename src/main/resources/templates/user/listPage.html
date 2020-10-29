@@ -66,26 +66,15 @@
 					  
 					  console.log(layEvent);
 					  if(layEvent === 'check'){ //查看
-						  $.ajax({
-								url : "/user/detail/check/page",
-								contentType : 'application/json',
-								data : JSON.stringify({
-										"userId" : data1.userId
-								}),
-								type : "POST",
-								dataType : "html",
-								success : function(data2) {
-										  layer.open({
-											  type: 1,
-											  fixed: true,
-											  content: '<iframe>'+data2+'</iframe>', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-											  btn: ['关闭'],
-											  btn1: function(index,layero){
-												  layer.close(index);
-											  }
-										  }); 
-								}
-						  });
+						  layer.open({
+							  type: 2,
+							  fixed: true,
+							  content: '/user/detail/check/page?userId='+data1.userId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+							  btn: ['关闭'],
+							  btn1: function(index,layero){
+								  layer.close(index);
+							  }
+						  }); 
 					  }
 					});
 				

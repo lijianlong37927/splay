@@ -1,0 +1,22 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: demo
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/qqodb?serverTimezone=UTC
+    username: qqouser
+    password: passw0rd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 10
+      idle-timeout: 600000
+      maximum-pool-size: 20
+      auto-commit: true
+      max-lifetime: 1800000
+      connection-timeout: 30000
+logging:
+  path: D:/logs/splay
+  level:
+    com.yumu.mapper: debug      
