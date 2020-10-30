@@ -1,8 +1,9 @@
 package com.yumu.mapper.ex;
 
-import com.yumu.controller.login.resp.MenuResp;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import com.yumu.controller.login.vo.LoginMenuListVo;
 
 public interface MenuInfoMapperEx {
 
@@ -12,5 +13,5 @@ public interface MenuInfoMapperEx {
 	 * @param userId
 	 * @return
 	 */
-	List<MenuResp> qryMenuList(@Param("userId") String userId);
+	List<LoginMenuListVo> qryMenuList(@Param("userId") String userId);
 }

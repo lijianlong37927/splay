@@ -1,14 +1,14 @@
-package com.yumu.controller.login.resp;
+package com.yumu.controller.login.vo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuResp {
+public class LoginMenuListVo {
 	private String menuId;
 	private String title;
 	private String url;
 	private String parentId;
-	private List<MenuResp> child = new ArrayList<>();
+	private List<LoginMenuListVo> child = new ArrayList<>();
 
 	public String getMenuId() {
 		return menuId;
@@ -34,11 +34,11 @@ public class MenuResp {
 		this.url = url;
 	}
 
-	public List<MenuResp> getChild() {
+	public List<LoginMenuListVo> getChild() {
 		return child;
 	}
 
-	public void setChild(List<MenuResp> child) {
+	public void setChild(List<LoginMenuListVo> child) {
 		this.child = child;
 	}
 

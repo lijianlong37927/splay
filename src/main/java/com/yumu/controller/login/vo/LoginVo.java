@@ -1,6 +1,6 @@
-package com.yumu.controller.login.req;
+package com.yumu.controller.login.vo;
 
-public class LoginReq {
+public class LoginVo {
 
 	private String userId;
 	private String password;

@@ -4,24 +4,24 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.yumu.constant.UserInfoConst;
+import com.yumu.constant.CommonConst;
 import com.yumu.context.LocalContext;
-import com.yumu.controller.login.resp.MenuResp;
+import com.yumu.controller.login.vo.LoginMenuListVo;
 import com.yumu.dto.UserInfoExample;
 import com.yumu.exception.ExceptionConst;
 import com.yumu.exception.ServiceException;
-import com.yumu.mapper.UserInfoMapper;
-import com.yumu.mapper.ex.MenuInfoMapperEx;
+import com.yumu.repo.MenuInfoRepo;
+import com.yumu.repo.UserInfoRepo;
 import com.yumu.tool.EncryptTool;
 
 @Service
 public class LoginService {
 
 	@Autowired
-	private UserInfoMapper userInfoMapper;
+	private UserInfoRepo userInfoRepo;
 
 	@Autowired
-	private MenuInfoMapperEx menuInfoMapperEx;
+	private MenuInfoRepo menuInfoRepo;
 
 	/**
 	 * <p>Title: login</p>
@@ -37,9 +37,9 @@ public class LoginService {
 			// 查询条件
 			UserInfoExample userInfoEp = new UserInfoExample();
 			userInfoEp.createCriteria().andUserIdEqualTo(userId).andPasswordEqualTo(passwordChg)
-					.andStatusEqualTo(UserInfoConst.STATUS_0);
+					.andStatusEqualTo(CommonConst.STATUS_VALID);
 			// 查询结果判断
-			if (CollectionUtils.isNotEmpty(userInfoMapper.selectByExample(userInfoEp))) {
+			if (CollectionUtils.isNotEmpty(userInfoRepo.selectByExample(userInfoEp))) {
 				LocalContext.getRequestContext().setUserId(userId);
 			} else {
 				ServiceException.throwException(ExceptionConst.CHECK_LOGIN_ERROR);
@@ -57,9 +57,9 @@ public class LoginService {
 	 * @param userId
 	 * @return
 	 */
-	public List<MenuResp> menuList(String userId) {
+	public List<LoginMenuListVo> menuList(String userId) {
 		try {
-			return menuInfoMapperEx.qryMenuList(userId);
+			return menuInfoRepo.qryMenuList(userId);
 		} catch (ServiceException serEx) {
 			throw serEx;
 		} catch (Exception ex) {

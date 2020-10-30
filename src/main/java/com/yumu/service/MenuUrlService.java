@@ -3,7 +3,8 @@ package com.yumu.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.yumu.controller.login.resp.MenuResp;
+
+import com.yumu.controller.login.vo.LoginMenuListVo;
 import com.yumu.mapper.ex.MenuUrlMapperEx;
 
 @Service
@@ -19,7 +20,7 @@ public class MenuUrlService {
 	 * @param url
 	 * @return
 	 */
-	public List<MenuResp> qryAuthUrl(String userId, String url) {
+	public List<LoginMenuListVo> qryAuthUrl(String userId, String url) {
 		return menuUrlMapperEx.qryAuthUrl(userId, url);
 	}
 }

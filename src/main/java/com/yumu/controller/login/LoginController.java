@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.yumu.context.LocalContext;
 import com.yumu.controller.Response;
-import com.yumu.controller.login.req.LoginReq;
-import com.yumu.controller.login.resp.MenuResp;
+import com.yumu.controller.login.vo.LoginMenuListVo;
+import com.yumu.controller.login.vo.LoginVo;
 import com.yumu.exception.ExceptionConst;
 import com.yumu.exception.ServiceException;
 import com.yumu.service.LoginService;
@@ -29,7 +29,7 @@ public class LoginController {
 
 	@PostMapping("/login")
 	@ResponseBody
-	public Response<Void> login(@RequestBody LoginReq req) {
+	public Response<Void> login(@RequestBody LoginVo req) {
 		loginService.login(req.getUserId(), req.getPassword());
 		return Response.success();
 	}
@@ -41,7 +41,7 @@ public class LoginController {
 
 	@RequestMapping("/menuList")
 	@ResponseBody
-	public Response<List<MenuResp>> menuList(HttpServletRequest request) {
+	public Response<List<LoginMenuListVo>> menuList(HttpServletRequest request) {
 		return Response.success(loginService.menuList(LocalContext.getRequestContext().getUserId()));
 	}
 

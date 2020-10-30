@@ -23,6 +23,7 @@ public class LocalConfig implements CommandLineRunner {
 		LocalConfigAnno anno = Application.class.getAnnotation(LocalConfigAnno.class);
 		storeType = anno.storeType();
 		logger.info("Init LocalConfig storeType[{}]", storeType);
+		logger.info("Init LocalConfig checkPath[{}]", checkPath);
 		logger.info("Init LocalConfig end");
 	}
 

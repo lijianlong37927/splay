@@ -16,12 +16,12 @@
   </resultMap>
   
   <!-- 自定义方法  开始-->
-  <resultMap id="qryMenuListMap" type="com.yumu.controller.login.resp.MenuResp">
+  <resultMap id="qryMenuListMap" type="com.yumu.controller.login.vo.LoginMenuListVo">
     <id column="menu_id" jdbcType="VARCHAR" property="menuId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
-    <collection column="{parentId = menu_id}" javaType="java.util.ArrayList" ofType="com.yumu.controller.login.resp.MenuResp" property="child" select="qryMenuChildList" />
+    <collection column="{parentId = menu_id}" javaType="java.util.ArrayList" ofType="com.yumu.controller.login.vo.LoginMenuListVo" property="child" select="qryMenuChildList" />
   </resultMap>
   <!-- 查询有权限菜单 -->
   <select id="qryMenuList" parameterType="java.lang.String" resultMap="qryMenuListMap">
@@ -41,7 +41,7 @@
 	  AND ui.user_id=#{userId,jdbcType=VARCHAR}
   </select>
   <!-- 查询有权限菜单-子菜单查询 -->
-  <select id="qryMenuChildList" resultType="com.yumu.controller.login.resp.MenuResp">
+  <select id="qryMenuChildList" resultType="com.yumu.controller.login.vo.LoginMenuListVo">
     SELECT
 	  mi.menu_id AS menuId,
 	  mi.title AS title,
