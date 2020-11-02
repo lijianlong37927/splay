@@ -26,7 +26,7 @@ public class ContextFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
 			throws IOException, ServletException {
-		if ("0".equals(LocalConfig.getStoreType())) {
+		if (LocalConfig.isStoreTypeMemory()) {
 			HttpServletRequest request = (HttpServletRequest) servletRequest;
 			HttpServletResponse response = (HttpServletResponse) servletResponse;
 			RequestContext requestContext = new SessionRequestContext(request, response);

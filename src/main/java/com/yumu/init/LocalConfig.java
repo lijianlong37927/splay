@@ -13,15 +13,20 @@ public class LocalConfig implements CommandLineRunner {
 
 	/** 登录信息存储类型,0:内存;1:redis*/
 	private static String storeType;
+	public static final String STORETYPE_MEMORY = "MEMORY";
+	public static final String STORETYPE_REDIS = "REDIS";
 
 	/** 是否校验请求路径,0:否;1:是*/
 	private static String checkPath;
+	public static final String CHECKPATH_NOT_CHECK = "NOT_CHECK";
+	public static final String CHECKPATH_CHECK = "CHECK";
 
 	@Override
 	public void run(String... args) throws Exception {
 		logger.info("Init LocalConfig begin");
 		LocalConfigAnno anno = Application.class.getAnnotation(LocalConfigAnno.class);
 		storeType = anno.storeType();
+		checkPath = anno.checkPath();
 		logger.info("Init LocalConfig storeType[{}]", storeType);
 		logger.info("Init LocalConfig checkPath[{}]", checkPath);
 		logger.info("Init LocalConfig end");
@@ -35,7 +40,11 @@ public class LocalConfig implements CommandLineRunner {
 		return checkPath;
 	}
 
+	public static boolean isStoreTypeMemory() {
+		return LocalConfig.STORETYPE_MEMORY.equals(storeType);
+	}
+
 	public static boolean isCheckPath() {
-		return "1".equals(checkPath);
+		return LocalConfig.CHECKPATH_CHECK.equals(checkPath);
 	}
 }

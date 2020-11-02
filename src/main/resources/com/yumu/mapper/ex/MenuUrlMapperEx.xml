@@ -19,7 +19,7 @@
 	  mu.url
     FROM
 	  user_info ui
-	  INNER JOIN user_role ur ON ( ui.user_id = ur.user_id AND ur.delete_flg=0 )
+	  INNER JOIN user_role ur ON ( ui.user_id = ur.user_id AND ur.status=0 )
 	  INNER JOIN role_menu rm ON ( ur.role_id = rm.role_id AND rm.delete_flg=0 )
 	  INNER JOIN menu_info mi ON ( rm.menu_id = mi.menu_id AND mi.delete_flg=0 ) 
 	  INNER JOIN menu_url mu ON ( mi.menu_id = mu.menu_id AND mu.delete_flg=0 )

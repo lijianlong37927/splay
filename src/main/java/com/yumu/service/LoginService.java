@@ -10,8 +10,8 @@ import com.yumu.controller.login.vo.LoginMenuListVo;
 import com.yumu.dto.UserInfoExample;
 import com.yumu.exception.ExceptionConst;
 import com.yumu.exception.ServiceException;
-import com.yumu.repo.MenuInfoRepo;
-import com.yumu.repo.UserInfoRepo;
+import com.yumu.repository.MenuInfoRepo;
+import com.yumu.repository.UserInfoRepo;
 import com.yumu.tool.EncryptTool;
 
 @Service

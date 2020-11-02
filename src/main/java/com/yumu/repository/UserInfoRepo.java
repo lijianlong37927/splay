@@ -1,14 +1,14 @@
-package com.yumu.repo;
+package com.yumu.repository;
 
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import com.yumu.dto.UserInfo;
 import com.yumu.dto.UserInfoExample;
 import com.yumu.mapper.UserInfoMapper;
 
-@Component
+@Repository
 public class UserInfoRepo {
 
 	@Autowired

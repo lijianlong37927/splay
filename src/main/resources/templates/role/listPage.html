@@ -11,12 +11,12 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">ID</label>
 			<div class="layui-input-inline">
-				<input type="text" name="userId" placeholder="请输入"
+				<input type="text" name="roleId" placeholder="请输入"
 					autocomplete="off" class="layui-input">
 			</div>
-			<label class="layui-form-label">姓名</label>
+			<label class="layui-form-label">角色名称</label>
 			<div class="layui-input-inline">
-				<input type="text" name="userName" placeholder="请输入"
+				<input type="text" name="roleName" placeholder="请输入"
 					autocomplete="off" class="layui-input">
 			</div>
 		</div>
@@ -56,31 +56,31 @@
 				laypage = layui.laypage;
 
 				var pageSize=10,pageNum=1;
-				var userId,userName,status;
+				var roleId,roleName,status;
 				
 				//监听提交
 				form.on('submit(submitButton)', function(data1) {
 					data1 = data1.field;
-					userId=data1.userId;
-					userName=data1.userName;
+					roleId=data1.roleId;
+					roleName=data1.roleName;
 					status=data1.status;
-					doPage(pageSize,pageNum,userId,userName,status);
+					doPage(pageSize,pageNum,roleId,roleName,status);
 					return false;
 				});
 				
-				function doPage(pageSize,pageNum,userIdParam,userNameParam,statusParam){
-					userId=userIdParam;
-					userName=userNameParam;
+				function doPage(pageSize,pageNum,roleIdParam,roleNameParam,statusParam){
+					roleId=roleIdParam;
+					roleName=roleNameParam;
 					status=statusParam;
 					$.ajax({
-						url : "/user/list/query",
+						url : "/role/list/query",
 						contentType : 'application/json',
 						data : JSON.stringify({
 							"pageSize" : pageSize,
 							"pageNum" : pageNum,
 							"condition" : {
-								"userId" : userId,
-								"userName" : userName,
+								"roleId" : roleId,
+								"roleName" : roleName,
 								"status" : status
 							}
 						}),
@@ -95,8 +95,8 @@
 									//page: true,
 									//标题栏
 									cols : [
-											[{field: 'userId', title: 'ID'}
-									    	,{field: 'userName', title: '用户名'}
+											[{field: 'roleId', title: 'ID'}
+									    	,{field: 'roleName', title: '用户名'}
 									    	,{fixed: 'right', width:200, align:'center', toolbar: '#tableButton'}
 									  		]
 										],
@@ -114,10 +114,10 @@
 									    
 									    //首次不执行
 									    if(!first){
-									    	//doPage(obj.limit,obj.curr,userId,userName);
+									    	//doPage(obj.limit,obj.curr,roleId,roleName);
 									    	pageSize=obj.limit;
 									    	pageNum=obj.curr;
-									    	doPage(pageSize,pageNum,userId,userName,status);
+									    	doPage(pageSize,pageNum,roleId,roleName,status);
 									    }
 									  }
 								});
@@ -140,7 +140,7 @@
 						  layer.open({
 							  type: 2,
 							  fixed: true,
-							  content: '/user/detail/check?userId='+data1.userId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+							  content: '/role/detail/check?roleId='+data1.roleId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
 							  skin: 'layui-layer-molv',
 							  area: ['500px', '300px']
 						  }); 
@@ -148,7 +148,7 @@
 						  layer.open({
 							  type: 2,
 							  fixed: true,
-							  content: '/user/detail/edit?userId='+data1.userId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+							  content: '/role/detail/edit?roleId='+data1.roleId, //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
 							  skin: 'layui-layer-molv',
 							  area: ['500px', '300px']
 						  }); 
@@ -159,16 +159,16 @@
 							      //layer.close(index);
 							      //向服务端发送删除指令
 							      $.ajax({
-										url : "/user/detail/del/submit",
+										url : "/role/detail/del/submit",
 										contentType : 'application/json',
 										data : JSON.stringify({
-												"userId" : data1.userId
+												"roleId" : data1.roleId
 										}),
 										type : "POST",
 										dataType : "json",
 										success : function(data2) {
 													if (data2.code == 0) {
-														doPage(pageSize,pageNum,userId,userName);
+														doPage(pageSize,pageNum,roleId,roleName);
 														layer.msg('删除成功', {
 															icon : 1,
 															time : 2000

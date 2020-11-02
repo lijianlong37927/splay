@@ -1,8 +1,6 @@
 server:
   port: 8001
 spring:
-  application:
-    name: demo
   datasource:
     url: jdbc:mysql://127.0.0.1:3307/qqodb?serverTimezone=UTC
     username: qqouser
@@ -17,6 +15,6 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
 logging:
-  config: classpath:log4j2.xml
+  path: /logs/splay
   level:
-    com.yumu.mapper: debug      
+    com.yumu.mapper: debug   

@@ -1,8 +1,6 @@
 server:
   port: 8001
 spring:
-  application:
-    name: demo
   datasource:
     url: jdbc:mysql://127.0.0.1:3307/qqodb?serverTimezone=UTC
     username: qqouser
@@ -16,6 +14,13 @@ spring:
       auto-commit: true
       max-lifetime: 1800000
       connection-timeout: 30000
+  # 热部署
+  devtools:
+    restart:
+      enabled: true
+  # 页面缓存
+  thymeleaf:
+    cache: false
 logging:
   path: D:/logs/splay
   level:

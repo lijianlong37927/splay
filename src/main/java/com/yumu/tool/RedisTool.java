@@ -31,9 +31,21 @@ public class RedisTool {
 	 * @param key
 	 * @param value
 	 * @param timeout
+	 * @return
 	 */
-	public static void setIfAbsent(String key, String value, long timeout) {
-		redisTool.stringRedisTemplate.opsForValue().setIfAbsent(key, value, timeout, TimeUnit.SECONDS);
+	public static boolean setIfAbsent(String key, String value, long timeout) {
+		return redisTool.stringRedisTemplate.opsForValue().setIfAbsent(key, value, timeout, TimeUnit.SECONDS);
+	}
+
+	/**
+	 * <p>Title: setIfAbsent</p>
+	 * <p>Description: </p>
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public static boolean setIfAbsent(String key, String value) {
+		return redisTool.stringRedisTemplate.opsForValue().setIfAbsent(key, value);
 	}
 
 	/**
@@ -44,5 +56,15 @@ public class RedisTool {
 	 */
 	public static String get(String key) {
 		return redisTool.stringRedisTemplate.opsForValue().get(key);
+	}
+
+	/**
+	 * <p>Title: delete</p>
+	 * <p>Description: 删除key</p>
+	 * @param key
+	 * @return
+	 */
+	public static boolean delete(String key) {
+		return redisTool.stringRedisTemplate.delete(key);
 	}
 }

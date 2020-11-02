@@ -15,9 +15,9 @@ import com.yumu.dto.UserInfo;
 import com.yumu.dto.UserRole;
 import com.yumu.exception.ExceptionConst;
 import com.yumu.exception.ServiceException;
-import com.yumu.repo.RoleInfoRepo;
-import com.yumu.repo.UserInfoRepo;
-import com.yumu.repo.UserRoleRepo;
+import com.yumu.repository.RoleInfoRepo;
+import com.yumu.repository.UserInfoRepo;
+import com.yumu.repository.UserRoleRepo;
 import com.yumu.tool.BeanTool;
 
 @Service
@@ -36,7 +36,7 @@ public class UserInfoService {
 			// 分页查询
 			PageHelper.startPage(page.getPageNum(), page.getPageSize());
 			List<UserInfo> userInfoList = userInfoRepo.qryByIdNameStatus(cond.getUserId(), cond.getUserName(),
-					CommonConst.STATUS_VALID);
+					cond.getStatus());
 			// 转换返回结果
 			return new ResponsePage<>(userInfoList, UserInfoVo.class);
 		} catch (ServiceException sex) {
@@ -55,7 +55,7 @@ public class UserInfoService {
 			userInfoVo.setUserId(userInfo.getUserId());
 			userInfoVo.setUserName(userInfo.getUserName());
 			// 查询所有角色
-			List<RoleInfo> roleInfoList = roleInfoRepo.selectByIdStatus(null, CommonConst.STATUS_VALID);
+			List<RoleInfo> roleInfoList = roleInfoRepo.qryByIdStatus(null, CommonConst.STATUS_VALID);
 			// 查询用户角色
 			List<UserRole> userRoleList = userRoleRepo.selectByUserId(userInfo.getUserId());
 			// 设置用户角色勾选
@@ -84,10 +84,11 @@ public class UserInfoService {
 			UserInfo userInfoUpd = new UserInfo();
 			userInfoUpd.setUserId(req.getUserId());
 			userInfoUpd.setUserName(req.getUserName());
+			userInfoUpd.setStatus(req.getStatus());
 			// 更新用户信息
 			userInfoRepo.updateByPrimaryKeySelective(userInfoUpd);
 			// 更新用户角色
-
+			userRoleRepo.updateUserRole(req.getUserId(), req.getRoleIdList());
 		} catch (ServiceException sex) {
 			throw sex;
 		} catch (Exception ex) {
