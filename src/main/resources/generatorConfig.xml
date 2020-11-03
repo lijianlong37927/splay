@@ -30,11 +30,11 @@
 			type="XMLMAPPER">
 		</javaClientGenerator>
 
-<!-- 		<table tableName="user_info"></table>
+ 		<table tableName="user_info"></table>
 		<table tableName="menu_url"></table>
 		<table tableName="user_role"></table>
 		<table tableName="menu_info"></table>
-		<table tableName="role_info"></table> -->
-		<table tableName="user_role"></table>
+		<table tableName="role_info"></table>
+		<!--<table tableName="user_role"></table> -->
 	</context>
 </generatorConfiguration>

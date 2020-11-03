@@ -23,9 +23,9 @@
 		<div class="layui-form-item">
 				<label class="layui-form-label">状态</label>
 				<div class="layui-input-block">
-					<input type="radio" name="status" value="" title="全部" >
-					<input type="radio" name="status" value="1" title="有效" > 
-					<input type="radio" name="status" value="0" title="无效" >
+					<input type="radio" name="state" value="" title="全部" >
+					<input type="radio" name="state" value="1" title="有效" > 
+					<input type="radio" name="state" value="0" title="无效" >
 				</div>
 		</div>		
 
@@ -56,22 +56,22 @@
 				laypage = layui.laypage;
 
 				var pageSize=10,pageNum=1;
-				var roleId,roleName,status;
+				var roleId,roleName,state;
 				
 				//监听提交
 				form.on('submit(submitButton)', function(data1) {
 					data1 = data1.field;
 					roleId=data1.roleId;
 					roleName=data1.roleName;
-					status=data1.status;
-					doPage(pageSize,pageNum,roleId,roleName,status);
+					state=data1.state;
+					doPage(pageSize,pageNum,roleId,roleName,state);
 					return false;
 				});
 				
-				function doPage(pageSize,pageNum,roleIdParam,roleNameParam,statusParam){
+				function doPage(pageSize,pageNum,roleIdParam,roleNameParam,stateParam){
 					roleId=roleIdParam;
 					roleName=roleNameParam;
-					status=statusParam;
+					state=stateParam;
 					$.ajax({
 						url : "/role/list/query",
 						contentType : 'application/json',
@@ -81,7 +81,7 @@
 							"condition" : {
 								"roleId" : roleId,
 								"roleName" : roleName,
-								"status" : status
+								"state" : state
 							}
 						}),
 						type : "POST",
@@ -117,7 +117,7 @@
 									    	//doPage(obj.limit,obj.curr,roleId,roleName);
 									    	pageSize=obj.limit;
 									    	pageNum=obj.curr;
-									    	doPage(pageSize,pageNum,roleId,roleName,status);
+									    	doPage(pageSize,pageNum,roleId,roleName,state);
 									    }
 									  }
 								});

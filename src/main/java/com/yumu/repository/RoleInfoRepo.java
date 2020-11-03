@@ -26,19 +26,19 @@ public class RoleInfoRepo {
 		return roleInfoMapper.selectByExample(example);
 	}
 
-	public List<RoleInfo> qryByIdStatus(String roleId, Integer status) {
+	public List<RoleInfo> qryByIdState(String roleId, Integer state) {
 		RoleInfoExample example = new RoleInfoExample();
 		RoleInfoExample.Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotBlank(roleId)) {
 			criteria.andRoleIdEqualTo(roleId);
 		}
-		if (status != null) {
-			criteria.andStatusEqualTo(status);
+		if (state != null) {
+			criteria.andStateEqualTo(state);
 		}
 		return roleInfoMapper.selectByExample(example);
 	}
 
-	public List<RoleInfo> qryByIdNameStatus(String roleId, String roleName, Integer status) {
+	public List<RoleInfo> qryByIdNameState(String roleId, String roleName, Integer state) {
 		RoleInfoExample example = new RoleInfoExample();
 		RoleInfoExample.Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotBlank(roleId)) {
@@ -47,8 +47,8 @@ public class RoleInfoRepo {
 		if (StringUtils.isNotBlank(roleName)) {
 			criteria.andRoleNameEqualTo(roleName);
 		}
-		if (status != null) {
-			criteria.andStatusEqualTo(status);
+		if (state != null) {
+			criteria.andStateEqualTo(state);
 		}
 		return roleInfoMapper.selectByExample(example);
 	}

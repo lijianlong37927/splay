@@ -4,7 +4,7 @@ public class RoleInfoVo {
 
 	private String roleId;
 	private String roleName;
-	private Integer status;
+	private Integer state;
 
 	public String getRoleId() {
 		return roleId;
@@ -22,12 +22,12 @@ public class RoleInfoVo {
 		this.roleName = roleName;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public Integer getState() {
+		return state;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setState(Integer state) {
+		this.state = state;
 	}
 
 }

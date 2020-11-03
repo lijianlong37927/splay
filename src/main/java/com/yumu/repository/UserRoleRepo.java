@@ -25,7 +25,7 @@ public class UserRoleRepo {
 	 */
 	public List<UserRole> selectByUserId(String userId) {
 		UserRoleExample example = new UserRoleExample();
-		example.createCriteria().andUserIdEqualTo(userId).andStatusEqualTo(CommonConst.STATUS_VALID);
+		example.createCriteria().andUserIdEqualTo(userId).andStateEqualTo(CommonConst.STATE_VALID);
 		return userRoleMapper.selectByExample(example);
 	}
 
@@ -44,7 +44,7 @@ public class UserRoleRepo {
 			LockTool.lock(UPDATEUSERROLE_LOCK_USERID + userId);
 			// 先修改成删除状态
 			UserRole userRoleUD = new UserRole();
-			userRoleUD.setStatus(CommonConst.STATUS_INVALID);
+			userRoleUD.setState(CommonConst.STATE_INVALID);
 			UserRoleExample exampleUd = new UserRoleExample();
 			exampleUd.createCriteria().andUserIdEqualTo(userId);
 			userRoleMapper.updateByExampleSelective(userRoleUD, exampleUd);

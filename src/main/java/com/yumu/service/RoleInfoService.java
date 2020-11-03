@@ -26,8 +26,8 @@ public class RoleInfoService {
 			RoleInfoVo cond = page.getCondition();
 			// 分页查询
 			PageHelper.startPage(page.getPageNum(), page.getPageSize());
-			List<RoleInfo> roleInfoList = roleInfoRepo.qryByIdNameStatus(cond.getRoleId(), cond.getRoleName(),
-					cond.getStatus());
+			List<RoleInfo> roleInfoList = roleInfoRepo.qryByIdNameState(cond.getRoleId(), cond.getRoleName(),
+					cond.getState());
 			// 转换返回结果
 			return new ResponsePage<>(roleInfoList, RoleInfoVo.class);
 		} catch (ServiceException sex) {
@@ -56,7 +56,7 @@ public class RoleInfoService {
 			RoleInfo roleInfoUpd = new RoleInfo();
 			roleInfoUpd.setRoleId(req.getRoleId());
 			roleInfoUpd.setRoleName(req.getRoleName());
-			roleInfoUpd.setStatus(req.getStatus());
+			roleInfoUpd.setState(req.getState());
 			// 更新角色信息
 			roleInfoRepo.updateByPrimaryKeySelective(roleInfoUpd);
 
@@ -73,7 +73,7 @@ public class RoleInfoService {
 			// 设置参数
 			RoleInfo roleInfoUpd = new RoleInfo();
 			roleInfoUpd.setRoleId(req.getRoleId());
-			roleInfoUpd.setStatus(CommonConst.STATUS_INVALID);
+			roleInfoUpd.setState(CommonConst.STATE_INVALID);
 			// 更新
 			roleInfoRepo.updateByPrimaryKeySelective(roleInfoUpd);
 		} catch (ServiceException sex) {

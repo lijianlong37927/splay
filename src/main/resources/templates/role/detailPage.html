@@ -43,8 +43,8 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">状态</label>
 				<div class="layui-input-block">
-					<input type="radio" name="status" value="1" title="有效" th:checked="${roleInfoVo.status eq 1}"> 
-					<input type="radio" name="status" value="0" title="无效" th:checked="${roleInfoVo.status eq 0}">
+					<input type="radio" name="state" value="1" title="有效" th:checked="${roleInfoVo.state eq 1}"> 
+					<input type="radio" name="state" value="0" title="无效" th:checked="${roleInfoVo.state eq 0}">
 				</div>
 			</div>
 			<div class="layui-form-item">
@@ -76,7 +76,7 @@
 						"userId" : $("#userId").val(),
 						"userName" : $("#userName").val(),
 						"roleIdList" : roleIdList,
-						"status" : $("input[name='status']:checked").val()
+						"state" : $("input[name='state']:checked").val()
 					}),
 					type : "POST",
 					dataType : "json",

@@ -6,7 +6,7 @@ public class UserInfoVo {
 
 	private String userId;
 	private String userName;
-	private Integer status;
+	private Integer state;
 	private List<String> roleIdList;
 	/** 角色*/
 	private List<RoleInfoVo> roleInfoVoList;
@@ -35,12 +35,12 @@ public class UserInfoVo {
 		this.roleInfoVoList = roleInfoVoList;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public Integer getState() {
+		return state;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setState(Integer state) {
+		this.state = state;
 	}
 
 	public List<String> getRoleIdList() {

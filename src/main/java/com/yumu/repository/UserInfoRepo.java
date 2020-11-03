@@ -26,7 +26,7 @@ public class UserInfoRepo {
 		return userInfoMapper.updateByPrimaryKeySelective(userInfo);
 	}
 
-	public List<UserInfo> qryByIdNameStatus(String userId, String name, Integer status) {
+	public List<UserInfo> qryByIdNameState(String userId, String name, Integer state) {
 		UserInfoExample example = new UserInfoExample();
 		UserInfoExample.Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotBlank(userId)) {
@@ -35,8 +35,8 @@ public class UserInfoRepo {
 		if (StringUtils.isNotBlank(name)) {
 			criteria.andUserNameLike(name);
 		}
-		if (status != null) {
-			criteria.andStatusEqualTo(status);
+		if (state != null) {
+			criteria.andStateEqualTo(state);
 		}
 		return userInfoMapper.selectByExample(example);
 	}

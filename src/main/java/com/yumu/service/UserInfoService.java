@@ -35,8 +35,8 @@ public class UserInfoService {
 			UserInfoVo cond = page.getCondition();
 			// 分页查询
 			PageHelper.startPage(page.getPageNum(), page.getPageSize());
-			List<UserInfo> userInfoList = userInfoRepo.qryByIdNameStatus(cond.getUserId(), cond.getUserName(),
-					cond.getStatus());
+			List<UserInfo> userInfoList = userInfoRepo.qryByIdNameState(cond.getUserId(), cond.getUserName(),
+					cond.getState());
 			// 转换返回结果
 			return new ResponsePage<>(userInfoList, UserInfoVo.class);
 		} catch (ServiceException sex) {
@@ -54,8 +54,9 @@ public class UserInfoService {
 			// 用户信息设置
 			userInfoVo.setUserId(userInfo.getUserId());
 			userInfoVo.setUserName(userInfo.getUserName());
+			userInfoVo.setState(userInfo.getState());
 			// 查询所有角色
-			List<RoleInfo> roleInfoList = roleInfoRepo.qryByIdStatus(null, CommonConst.STATUS_VALID);
+			List<RoleInfo> roleInfoList = roleInfoRepo.qryByIdState(null, CommonConst.STATE_VALID);
 			// 查询用户角色
 			List<UserRole> userRoleList = userRoleRepo.selectByUserId(userInfo.getUserId());
 			// 设置用户角色勾选
@@ -84,7 +85,7 @@ public class UserInfoService {
 			UserInfo userInfoUpd = new UserInfo();
 			userInfoUpd.setUserId(req.getUserId());
 			userInfoUpd.setUserName(req.getUserName());
-			userInfoUpd.setStatus(req.getStatus());
+			userInfoUpd.setState(req.getState());
 			// 更新用户信息
 			userInfoRepo.updateByPrimaryKeySelective(userInfoUpd);
 			// 更新用户角色
@@ -102,7 +103,7 @@ public class UserInfoService {
 			// 设置参数
 			UserInfo userInfoUpd = new UserInfo();
 			userInfoUpd.setUserId(req.getUserId());
-			userInfoUpd.setStatus(CommonConst.STATUS_INVALID);
+			userInfoUpd.setState(CommonConst.STATE_INVALID);
 			// 更新
 			userInfoRepo.updateByPrimaryKeySelective(userInfoUpd);
 		} catch (ServiceException sex) {

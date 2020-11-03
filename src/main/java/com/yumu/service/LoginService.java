@@ -37,7 +37,7 @@ public class LoginService {
 			// 查询条件
 			UserInfoExample userInfoEp = new UserInfoExample();
 			userInfoEp.createCriteria().andUserIdEqualTo(userId).andPasswordEqualTo(passwordChg)
-					.andStatusEqualTo(CommonConst.STATUS_VALID);
+					.andStateEqualTo(CommonConst.STATE_VALID);
 			// 查询结果判断
 			if (CollectionUtils.isNotEmpty(userInfoRepo.selectByExample(userInfoEp))) {
 				LocalContext.getRequestContext().setUserId(userId);

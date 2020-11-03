@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 02/11/2020 17:52:13
+ Date: 03/11/2020 10:46:53
 */
 
 SET NAMES utf8mb4;
@@ -39,8 +39,8 @@ CREATE TABLE `menu_info`  (
 -- ----------------------------
 -- Records of menu_info
 -- ----------------------------
-INSERT INTO `menu_info` VALUES ('M01', '系统管理', NULL, NULL, 1, 0, 0, NULL, '2020-09-14 10:00:42', NULL, '2020-09-15 10:22:37');
-INSERT INTO `menu_info` VALUES ('M0101', '用户管理', '/user/list', 'M01', 2, 0, 0, NULL, '2020-09-14 09:19:34', NULL, '2020-10-30 09:17:51');
+INSERT INTO `menu_info` VALUES ('M01', '系统管理', NULL, NULL, 1, 0, 1, NULL, '2020-09-14 10:00:42', NULL, '2020-11-02 18:01:14');
+INSERT INTO `menu_info` VALUES ('M0101', '用户管理', '/user/list', 'M01', 2, 0, 1, NULL, '2020-09-14 09:19:34', NULL, '2020-11-02 18:01:16');
 
 -- ----------------------------
 -- Table structure for menu_url
@@ -60,12 +60,12 @@ CREATE TABLE `menu_url`  (
 -- ----------------------------
 -- Records of menu_url
 -- ----------------------------
-INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/check', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/del/submit', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/edit', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/edit/submit', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `menu_url` VALUES ('M0101', '/user/list', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `menu_url` VALUES ('M0101', '/user/list/query', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/check', 1, NULL, NULL, NULL, '2020-11-02 18:00:58');
+INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/del/submit', 1, NULL, NULL, NULL, '2020-11-02 18:00:59');
+INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/edit', 1, NULL, NULL, NULL, '2020-11-02 18:01:00');
+INSERT INTO `menu_url` VALUES ('M0101', '/user/detail/edit/submit', 1, NULL, NULL, NULL, '2020-11-02 18:01:01');
+INSERT INTO `menu_url` VALUES ('M0101', '/user/list', 1, NULL, NULL, NULL, '2020-11-02 18:01:02');
+INSERT INTO `menu_url` VALUES ('M0101', '/user/list/query', 1, NULL, NULL, NULL, '2020-11-02 18:01:04');
 
 -- ----------------------------
 -- Table structure for role_info
@@ -107,8 +107,8 @@ CREATE TABLE `role_menu`  (
 -- ----------------------------
 -- Records of role_menu
 -- ----------------------------
-INSERT INTO `role_menu` VALUES ('1', 'R001', 'M0101', 0, NULL, '2019-09-12 15:52:24', NULL, '2020-09-14 11:46:39');
-INSERT INTO `role_menu` VALUES ('2', 'R001', 'M01', 0, NULL, '2019-09-12 15:52:24', NULL, '2020-09-14 11:46:41');
+INSERT INTO `role_menu` VALUES ('1', 'R001', 'M0101', 1, NULL, '2019-09-12 15:52:24', NULL, '2020-11-03 08:53:59');
+INSERT INTO `role_menu` VALUES ('2', 'R001', 'M01', 1, NULL, '2019-09-12 15:52:24', NULL, '2020-11-03 08:54:01');
 
 -- ----------------------------
 -- Table structure for user_info
@@ -159,7 +159,7 @@ CREATE TABLE `user_role`  (
   `update_datetime` datetime(0) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_role_1`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_role
