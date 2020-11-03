@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.yumu.controller.login.vo.LoginMenuListVo;
 
-public interface MenuUrlMapperEx {
+public interface RoleUrlMapperEx {
 
 	/**
 	 * <p>Title: qryAuthUrl</p>

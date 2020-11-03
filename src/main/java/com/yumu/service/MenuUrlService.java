@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yumu.controller.login.vo.LoginMenuListVo;
-import com.yumu.mapper.ex.MenuUrlMapperEx;
+import com.yumu.mapper.ex.RoleUrlMapperEx;
 
 @Service
 public class MenuUrlService {
 
 	@Autowired
-	private MenuUrlMapperEx menuUrlMapperEx;
+	private RoleUrlMapperEx roleUrlMapperEx;
 
 	/**
 	 * <p>Title: qryAuthUrl</p>
@@ -21,6 +21,6 @@ public class MenuUrlService {
 	 * @return
 	 */
 	public List<LoginMenuListVo> qryAuthUrl(String userId, String url) {
-		return menuUrlMapperEx.qryAuthUrl(userId, url);
+		return roleUrlMapperEx.qryAuthUrl(userId, url);
 	}
 }

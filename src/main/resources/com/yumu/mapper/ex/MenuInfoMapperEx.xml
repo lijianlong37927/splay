@@ -23,6 +23,7 @@
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
     <collection column="{parentId = menu_id}" javaType="java.util.ArrayList" ofType="com.yumu.controller.login.vo.LoginMenuListVo" property="child" select="qryMenuChildList" />
   </resultMap>
+ 
   <!-- 查询有权限菜单 -->
   <select id="qryMenuList" parameterType="java.lang.String" resultMap="qryMenuListMap">
     SELECT
@@ -55,5 +56,41 @@
 	  AND mi.level=2
   </select>
 
+  <resultMap id="qryAllMenuListMap" type="com.yumu.controller.menu.vo.MenuInfoVo">
+    <id column="menu_id" jdbcType="VARCHAR" property="menuId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <collection column="{parentId = menu_id}" javaType="java.util.ArrayList" ofType="com.yumu.controller.menu.vo.MenuInfoVo" property="children" select="qryAllMenuChildList" />
+  </resultMap> 
+  
+  <!-- 查询有权限菜单 -->
+  <select id="qryAllMenuList" parameterType="java.lang.String" resultMap="qryAllMenuListMap">
+    SELECT
+	  mi.menu_id,
+	  mi.title,
+	  mi.url,
+	  mi.parent_id
+    FROM
+	  menu_info mi
+    WHERE
+	  mi.state=1 
+	  AND mi.level=1
+
+  </select>
+  <!-- 查询有权限菜单-子菜单查询 -->
+  <select id="qryAllMenuChildList" resultType="com.yumu.controller.menu.vo.MenuInfoVo">
+    SELECT
+	  mi.menu_id AS menuId,
+	  mi.title AS title,
+	  mi.url AS url,
+	  mi.parent_id AS parentId
+    FROM
+	  menu_info mi
+    WHERE
+      mi.parent_id=#{parentId,jdbcType=VARCHAR}
+	  AND mi.state = 1
+	  AND mi.level=2
+  </select>  
   <!-- 自定义方法  结束-->
 </mapper>

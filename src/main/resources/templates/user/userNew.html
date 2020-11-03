@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>后台管理系统</title>
+<link rel="stylesheet" href="/js/layui/css/layui.css">
+<script src="/js/layui/layui.js"></script>
+
+<style type="text/css">
+.container {
+	padding: 20px;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<form class="layui-form">
+			<div class="layui-form-item">
+				<label class="layui-form-label">ID</label>
+				<div class="layui-input-inline">
+					<input type="text" id="userId" name="userId" placeholder="请输入"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">姓名</label>
+				<div class="layui-input-inline">
+					<input type="text" id="userName" name="userName" placeholder="请输入"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">角色</label>
+				<div class="layui-input-block">
+						<input type="checkbox" name="roleId" th:each="roleInfoVo:${userInfo.roleInfoVoList}" th:value="${roleInfoVo.roleId}" th:title="${roleInfoVo.roleName}"
+							lay-skin="primary" th:checked="${roleInfoVo.checked}">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">状态</label>
+				<div class="layui-input-block">
+					<input type="radio" name="state" value="1" title="有效" th:checked="${userInfo.state eq 1}"> 
+					<input type="radio" name="state" value="0" title="无效" th:checked="${userInfo.state eq 0}">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button th:if="${editFlag=='1'}" type="submit" class="layui-btn"
+						lay-submit lay-filter="submitButton">保存</button>
+					<button class="layui-btn layui-btn-warm" lay-submit
+						lay-filter="closeButton">关闭</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<script type="text/javascript">
+		layui.use([ 'form', 'jquery' ], function() {
+			var $ = layui.jquery, form = layui.form, layer = layui.layer;
+			//监听提交
+			form.on('submit(submitButton)', function(data1) {
+				console.info(1);
+				var roleIdList=[];
+				$("input[name='roleId']:checked").each(function(){
+					roleIdList.push($(this).val());
+				});
+				console.info(roleIdList);
+				$.ajax({
+					url : "/user/detail/new/submit",
+					contentType : 'application/json',
+					data : JSON.stringify({
+						"userId" : $("#userId").val(),
+						"userName" : $("#userName").val(),
+						"roleIdList" : roleIdList,
+						"state" : $("input[name='state']:checked").val()
+					}),
+					type : "POST",
+					dataType : "json",
+					success : function(data2) {
+						if (data2.code == 0) {
+							layer.msg('保存成功', {
+								icon : 1,
+								time : 2000
+							//2秒关闭（如果不配置，默认是3秒）
+							});
+							var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+							parent.layer.close(index); //再执行关闭
+						} else {
+							layer.alert(data2.msg, function() {
+								layer.closeAll();//关闭所有弹框
+							});
+						}
+					}
+				});
+				return false;
+			});
+
+			form.on('submit(closeButton)', function(data1) {
+				//假设这是iframe页
+				var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+				parent.layer.close(index); //再执行关闭
+				return false;
+			});
+
+		});
+	</script>
+
+</body>
+</html>

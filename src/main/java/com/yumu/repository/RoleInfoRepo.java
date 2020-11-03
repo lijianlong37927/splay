@@ -26,6 +26,10 @@ public class RoleInfoRepo {
 		return roleInfoMapper.selectByExample(example);
 	}
 
+	public int insertSelective(RoleInfo roleInfo) {
+		return roleInfoMapper.insertSelective(roleInfo);
+	}
+
 	public List<RoleInfo> qryByIdState(String roleId, Integer state) {
 		RoleInfoExample example = new RoleInfoExample();
 		RoleInfoExample.Criteria criteria = example.createCriteria();

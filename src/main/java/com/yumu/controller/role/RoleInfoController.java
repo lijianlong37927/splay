@@ -22,7 +22,7 @@ public class RoleInfoController {
 
 	@RequestMapping("/list")
 	public String listPage() {
-		return "/role/listPage";
+		return "/role/roleList";
 	}
 
 	@PostMapping("/list/query")
@@ -31,10 +31,23 @@ public class RoleInfoController {
 		return roleInfoService.listQuery(page);
 	}
 
+	@RequestMapping("/detail/new")
+	public ModelAndView newPage(RoleInfoVo req) {
+		ModelAndView mv = new ModelAndView("/role/roleNew");
+		mv.addObject("roleInfo", roleInfoService.newPage());
+		return mv;
+	}
+
+	@RequestMapping("/detail/new/submit")
+	public Response<Void> newSubmit(RoleInfoVo req) {
+		roleInfoService.newSubmit(req);
+		return Response.success();
+	}
+
 	@RequestMapping("/detail/check")
 	public ModelAndView detailPage(RoleInfoVo req) {
 		RoleInfoVo roleInfoVo = roleInfoService.getRoleInfoById(req.getRoleId());
-		ModelAndView mv = new ModelAndView("/role/detailPage");
+		ModelAndView mv = new ModelAndView("/role/roleDetail");
 		mv.addObject("roleInfo", roleInfoVo);
 		mv.addObject("editFlag", "0");
 		return mv;
@@ -43,7 +56,7 @@ public class RoleInfoController {
 	@RequestMapping("/detail/edit")
 	public ModelAndView editPage(RoleInfoVo req) {
 		RoleInfoVo roleInfoVo = roleInfoService.getRoleInfoById(req.getRoleId());
-		ModelAndView mv = new ModelAndView("/role/detailPage");
+		ModelAndView mv = new ModelAndView("/role/roleDetail");
 		mv.addObject("roleInfo", roleInfoVo);
 		mv.addObject("editFlag", "1");
 		return mv;

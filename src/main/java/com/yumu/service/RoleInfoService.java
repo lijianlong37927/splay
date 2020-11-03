@@ -37,6 +37,44 @@ public class RoleInfoService {
 		}
 	}
 
+	/**
+	 * <p>Title: newPage</p>
+	 * <p>Description: 新建初始化数据</p>
+	 * @return
+	 */
+	public RoleInfoVo newPage() {
+		try {
+			RoleInfoVo roleInfoVo = new RoleInfoVo();
+			return roleInfoVo;
+		} catch (ServiceException sex) {
+			throw sex;
+		} catch (Exception ex) {
+			throw new ServiceException(ex, ExceptionConst.QUERY_ERROR);
+		}
+	}
+
+	/**
+	 * <p>Title: newSubmit</p>
+	 * <p>Description: 新增提交</p>
+	 * @param req
+	 */
+	public void newSubmit(RoleInfoVo req) {
+		try {
+			// 设置参数
+			RoleInfo roleInfoIS = new RoleInfo();
+			roleInfoIS.setRoleId(req.getRoleId());
+			roleInfoIS.setRoleName(req.getRoleName());
+			roleInfoIS.setState(req.getState());
+			// 更新用户信息
+			roleInfoRepo.insertSelective(roleInfoIS);
+
+		} catch (ServiceException sex) {
+			throw sex;
+		} catch (Exception ex) {
+			throw new ServiceException(ex, ExceptionConst.EDIT_ERROR);
+		}
+	}
+
 	public RoleInfoVo getRoleInfoById(String roleId) {
 		try {
 			// 查询用户信息

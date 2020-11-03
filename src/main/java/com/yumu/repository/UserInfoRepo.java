@@ -26,6 +26,10 @@ public class UserInfoRepo {
 		return userInfoMapper.updateByPrimaryKeySelective(userInfo);
 	}
 
+	public int insertSelective(UserInfo userInfo) {
+		return userInfoMapper.insertSelective(userInfo);
+	}
+
 	public List<UserInfo> qryByIdNameState(String userId, String name, Integer state) {
 		UserInfoExample example = new UserInfoExample();
 		UserInfoExample.Criteria criteria = example.createCriteria();

@@ -30,6 +30,12 @@ public class UserInfoService {
 	@Autowired
 	private UserRoleRepo userRoleRepo;
 
+	/**
+	 * <p>Title: listQuery</p>
+	 * <p>Description: 查询列表</p>
+	 * @param page
+	 * @return
+	 */
 	public ResponsePage<UserInfoVo> listQuery(RequestPage<UserInfoVo> page) {
 		try {
 			UserInfoVo cond = page.getCondition();
@@ -46,6 +52,58 @@ public class UserInfoService {
 		}
 	}
 
+	/**
+	 * <p>Title: newPage</p>
+	 * <p>Description: 新建初始化数据</p>
+	 * @return
+	 */
+	public UserInfoVo newPage() {
+		try {
+			UserInfoVo userInfoVo = new UserInfoVo();
+			// 查询所有角色
+			List<RoleInfo> roleInfoList = roleInfoRepo.qryByIdState(null, CommonConst.STATE_VALID);
+			List<RoleInfoVo> roleInfoVoList = BeanTool.convertList(roleInfoList, RoleInfoVo.class);
+
+			// 角色设值
+			userInfoVo.setRoleInfoVoList(roleInfoVoList);
+
+			return userInfoVo;
+		} catch (ServiceException sex) {
+			throw sex;
+		} catch (Exception ex) {
+			throw new ServiceException(ex, ExceptionConst.QUERY_ERROR);
+		}
+	}
+
+	/**
+	 * <p>Title: newSubmit</p>
+	 * <p>Description: 新增提交</p>
+	 * @param req
+	 */
+	public void newSubmit(UserInfoVo req) {
+		try {
+			// 设置参数
+			UserInfo userInfoIS = new UserInfo();
+			userInfoIS.setUserId(req.getUserId());
+			userInfoIS.setUserName(req.getUserName());
+			userInfoIS.setState(req.getState());
+			// 更新用户信息
+			userInfoRepo.insertSelective(userInfoIS);
+			// 更新用户角色
+			userRoleRepo.updateUserRole(req.getUserId(), req.getRoleIdList());
+		} catch (ServiceException sex) {
+			throw sex;
+		} catch (Exception ex) {
+			throw new ServiceException(ex, ExceptionConst.EDIT_ERROR);
+		}
+	}
+
+	/**
+	 * <p>Title: getUserInfoById</p>
+	 * <p>Description: 获取详情</p>
+	 * @param userId
+	 * @return
+	 */
 	public UserInfoVo getUserInfoById(String userId) {
 		try {
 			UserInfoVo userInfoVo = new UserInfoVo();
@@ -78,16 +136,21 @@ public class UserInfoService {
 		}
 	}
 
+	/**
+	 * <p>Title: editSubmit</p>
+	 * <p>Description: 修改提交</p>
+	 * @param req
+	 */
 	@Transactional(rollbackFor = { Exception.class })
 	public void editSubmit(UserInfoVo req) {
 		try {
 			// 设置参数
-			UserInfo userInfoUpd = new UserInfo();
-			userInfoUpd.setUserId(req.getUserId());
-			userInfoUpd.setUserName(req.getUserName());
-			userInfoUpd.setState(req.getState());
+			UserInfo userInfoUD = new UserInfo();
+			userInfoUD.setUserId(req.getUserId());
+			userInfoUD.setUserName(req.getUserName());
+			userInfoUD.setState(req.getState());
 			// 更新用户信息
-			userInfoRepo.updateByPrimaryKeySelective(userInfoUpd);
+			userInfoRepo.updateByPrimaryKeySelective(userInfoUD);
 			// 更新用户角色
 			userRoleRepo.updateUserRole(req.getUserId(), req.getRoleIdList());
 		} catch (ServiceException sex) {
@@ -97,6 +160,11 @@ public class UserInfoService {
 		}
 	}
 
+	/**
+	 * <p>Title: delSubmit</p>
+	 * <p>Description: 删除提交</p>
+	 * @param req
+	 */
 	@Transactional(rollbackFor = { Exception.class })
 	public void delSubmit(UserInfoVo req) {
 		try {

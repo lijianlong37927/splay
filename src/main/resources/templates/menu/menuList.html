@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>后台管理系统</title>
+<link rel="stylesheet" href="/js/layui/css/layui.css">
+<script src="/js/layui/layui.js"></script>
+
+<style type="text/css">
+#menuTreeContent, #menuDetailContent {
+	width: 48.5%;
+	display: inline-block;
+	vertical-align: top;
+	padding: 20px;
+	background: white;
+	box-sizing: border-box;
+}
+</style>
+</head>
+<body>
+	<div id="menuTreeContent">
+		<div id="menuTreeDiv"></div>
+	</div>
+	<div id="menuDetailContent">
+		<div id="menuDetailDiv"></div>
+	</div>
+
+	<script>
+		layui.use([ 'tree', 'util', 'jquery' ], function() {
+			console.info(111);
+			var $ = layui.jquery, util = layui.util, tree = layui.tree;
+			console.info(222);
+			$.ajax({
+				url : "/menu/list/query",
+				contentType : 'application/json',
+				type : "POST",
+				dataType : "json",
+				success : function(data) {
+					console.info(data);
+					if (data.code == 0) {
+						tree.render({
+							elem : '#menuTreeDiv',
+							data : data.data,
+							id : 'treeId',
+							showCheckbox : false,
+							onlyIconControl : true
+						});
+					} else {
+						layer.alert(data.msg, function() {
+							layer.closeAll();//关闭所有弹框
+						});
+					}
+				}
+			});
+
+		});
+	</script>
+</body>
+</html>

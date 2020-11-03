@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yumu.mapper.ex.MenuUrlMapperEx">
-  <resultMap id="BaseResultMap" type="com.yumu.dto.MenuUrl">
-    <id column="menu_id" jdbcType="VARCHAR" property="menuId" />
+<mapper namespace="com.yumu.mapper.ex.RoleUrlMapperEx">
+  <resultMap id="BaseResultMap" type="com.yumu.dto.RoleUrl">
+    <id column="role_id" jdbcType="VARCHAR" property="roleId" />
     <id column="url" jdbcType="VARCHAR" property="url" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
@@ -15,18 +15,16 @@
   <!-- 查询有权限请求 -->
   <select id="qryAuthUrl" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT
-	  mu.menu_id,
+	  mu.role_id,
 	  mu.url
     FROM
 	  user_info ui
 	  INNER JOIN user_role ur ON ( ui.user_id = ur.user_id AND ur.state=1 )
-	  INNER JOIN role_menu rm ON ( ur.role_id = rm.role_id AND rm.state=1 )
-	  INNER JOIN menu_info mi ON ( rm.menu_id = mi.menu_id AND mi.state=1 ) 
-	  INNER JOIN menu_url mu ON ( mi.menu_id = mu.menu_id AND mu.state=1 )
+	  INNER JOIN role_url mu ON ( ur.role_id = mu.role_id AND mu.state=1 )
     WHERE
 	  ui.state =1
 	  AND ui.user_id=#{userId,jdbcType=VARCHAR}
-	  AND mu.url=#{url,jdbcType=VARCHAR}
+	  AND #{url,jdbcType=VARCHAR} like mu.url
   </select> 
   <!-- 自定义方法  结束--> 
 </mapper>

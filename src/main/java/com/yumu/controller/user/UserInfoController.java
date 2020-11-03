@@ -22,7 +22,7 @@ public class UserInfoController {
 
 	@RequestMapping("/list")
 	public String listPage() {
-		return "/user/listPage";
+		return "/user/userList";
 	}
 
 	@PostMapping("/list/query")
@@ -31,10 +31,23 @@ public class UserInfoController {
 		return userInfoService.listQuery(page);
 	}
 
+	@RequestMapping("/detail/new")
+	public ModelAndView newPage(UserInfoVo req) {
+		ModelAndView mv = new ModelAndView("/user/userNew");
+		mv.addObject("userInfo", userInfoService.newPage());
+		return mv;
+	}
+
+	@RequestMapping("/detail/new/submit")
+	public Response<Void> newSubmit(UserInfoVo req) {
+		userInfoService.newSubmit(req);
+		return Response.success();
+	}
+
 	@RequestMapping("/detail/check")
 	public ModelAndView detailPage(UserInfoVo req) {
 		UserInfoVo userInfoVo = userInfoService.getUserInfoById(req.getUserId());
-		ModelAndView mv = new ModelAndView("/user/detailPage");
+		ModelAndView mv = new ModelAndView("/user/userDetail");
 		mv.addObject("userInfo", userInfoVo);
 		mv.addObject("editFlag", "0");
 		return mv;
@@ -43,7 +56,7 @@ public class UserInfoController {
 	@RequestMapping("/detail/edit")
 	public ModelAndView editPage(UserInfoVo req) {
 		UserInfoVo userInfoVo = userInfoService.getUserInfoById(req.getUserId());
-		ModelAndView mv = new ModelAndView("/user/detailPage");
+		ModelAndView mv = new ModelAndView("/user/userDetail");
 		mv.addObject("userInfo", userInfoVo);
 		mv.addObject("editFlag", "1");
 		return mv;
@@ -56,7 +69,7 @@ public class UserInfoController {
 		return Response.success();
 	}
 
-	@PostMapping("/detail/del/submit")
+	@PostMapping("/list/del/submit")
 	@ResponseBody
 	public Response<Void> delSubmit(@RequestBody UserInfoVo req) {
 		userInfoService.delSubmit(req);
