@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 03/11/2020 18:06:22
+ Date: 04/11/2020 18:00:52
 */
 
 SET NAMES utf8mb4;
@@ -22,26 +22,28 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `menu_info`;
 CREATE TABLE `menu_info`  (
-  `menu_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `id` int(12) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `parent_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `parent_id` int(12) DEFAULT NULL,
   `level` int(2) DEFAULT NULL,
-  `hide_flg` int(1) DEFAULT NULL,
+  `hide_flg` int(1) DEFAULT 0,
   `state` int(3) DEFAULT 1,
   `create_user` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建用户',
   `create_datetime` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_user` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新用户',
   `update_datetime` datetime(0) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-  PRIMARY KEY (`menu_id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menu_info
 -- ----------------------------
-INSERT INTO `menu_info` VALUES ('M01', '系统管理', NULL, NULL, 1, 0, 1, NULL, '2020-09-14 10:00:42', NULL, '2020-11-02 18:01:14');
-INSERT INTO `menu_info` VALUES ('M0101', '用户管理', '/user/list', 'M01', 2, 0, 1, NULL, '2020-09-14 09:19:34', NULL, '2020-11-02 18:01:16');
-INSERT INTO `menu_info` VALUES ('M0102', '菜单管理', '/menu/list', 'M01', 2, 0, 1, NULL, '2020-09-14 09:19:34', NULL, '2020-11-03 18:02:18');
+INSERT INTO `menu_info` VALUES (1, '系统管理', '', 0, 1, 0, 1, NULL, '2020-09-14 10:00:42', NULL, '2020-11-04 17:39:48');
+INSERT INTO `menu_info` VALUES (2, '用户管理', '/user/list', 1, 2, 0, 1, NULL, '2020-09-14 09:19:34', NULL, '2020-11-04 14:33:28');
+INSERT INTO `menu_info` VALUES (3, '菜单管理', '/menu/list', 1, 2, 0, 1, NULL, '2020-09-14 09:19:34', NULL, '2020-11-04 14:33:30');
+INSERT INTO `menu_info` VALUES (15, '未命名', NULL, 0, 1, 0, 1, NULL, '2020-11-04 16:10:49', NULL, NULL);
+INSERT INTO `menu_info` VALUES (16, '未命名', NULL, 15, 2, 0, 1, NULL, '2020-11-04 16:10:58', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for role_info
@@ -69,9 +71,9 @@ INSERT INTO `role_info` VALUES ('R001', '普通用户', 1, NULL, '2020-10-30 16:
 -- ----------------------------
 DROP TABLE IF EXISTS `role_menu`;
 CREATE TABLE `role_menu`  (
-  `id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `id` int(12) NOT NULL AUTO_INCREMENT,
   `role_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `menu_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `menu_id` int(12) NOT NULL,
   `state` int(3) DEFAULT 1,
   `create_user` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建用户',
   `create_datetime` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -83,8 +85,9 @@ CREATE TABLE `role_menu`  (
 -- ----------------------------
 -- Records of role_menu
 -- ----------------------------
-INSERT INTO `role_menu` VALUES ('1', 'R001', 'M0101', 1, NULL, '2019-09-12 15:52:24', NULL, '2020-11-03 08:53:59');
-INSERT INTO `role_menu` VALUES ('2', 'R001', 'M01', 1, NULL, '2019-09-12 15:52:24', NULL, '2020-11-03 08:54:01');
+INSERT INTO `role_menu` VALUES (1, 'R001', 1, 1, NULL, '2019-09-12 15:52:24', NULL, '2020-11-04 16:20:32');
+INSERT INTO `role_menu` VALUES (2, 'R001', 2, 1, NULL, '2019-09-12 15:52:24', NULL, '2020-11-04 16:21:01');
+INSERT INTO `role_menu` VALUES (3, 'R001', 3, 1, NULL, '2020-11-04 16:21:30', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for role_url
@@ -101,7 +104,7 @@ CREATE TABLE `role_url`  (
   `update_datetime` datetime(0) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_role_1`(`role_id`, `url`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_url
@@ -116,6 +119,9 @@ INSERT INTO `role_url` VALUES (7, 'R001', '/user/detail/edit/submit', 1, NULL, '
 INSERT INTO `role_url` VALUES (8, 'R001', '/user/list/del/submit', 1, NULL, '2020-11-03 17:30:05', NULL, NULL);
 INSERT INTO `role_url` VALUES (9, 'R001', '/menu/list/query', 1, NULL, '2020-11-03 17:30:10', NULL, NULL);
 INSERT INTO `role_url` VALUES (10, 'R001', '/menu/list', 1, NULL, '2020-11-03 18:05:37', NULL, NULL);
+INSERT INTO `role_url` VALUES (11, 'R001', '/menu/detail/edit', 1, NULL, '2020-11-04 09:18:27', NULL, NULL);
+INSERT INTO `role_url` VALUES (12, 'R001', '/menu/detail/edit/submit', 1, NULL, '2020-11-04 09:18:39', NULL, NULL);
+INSERT INTO `role_url` VALUES (13, 'R001', '/menu/detail/new/submit', 1, NULL, '2020-11-04 15:16:50', NULL, '2020-11-04 15:17:22');
 
 -- ----------------------------
 -- Table structure for user_info

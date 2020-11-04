@@ -4,18 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuInfoVo {
-	private String menuId;
+	private Integer id;
 	private String title;
 	private String url;
-	private String parentId;
+	private Integer level;
+	private Integer parentId;
+	private Boolean spread = true;
+	/** 角色Id*/
+	private List<String> roleIdList;
+	/** 角色*/
+	private List<RoleInfoVo> roleInfoVoList;
+	/** 下级菜单*/
 	private List<MenuInfoVo> children = new ArrayList<>();
 
-	public String getMenuId() {
-		return menuId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setId(String menuId) {
-		this.menuId = menuId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -42,11 +49,43 @@ public class MenuInfoVo {
 		this.children = children;
 	}
 
-	public String getParentId() {
+	public Integer getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(String parentId) {
+	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	public Boolean getSpread() {
+		return spread;
+	}
+
+	public void setSpread(Boolean spread) {
+		this.spread = spread;
+	}
+
+	public List<RoleInfoVo> getRoleInfoVoList() {
+		return roleInfoVoList;
+	}
+
+	public void setRoleInfoVoList(List<RoleInfoVo> roleInfoVoList) {
+		this.roleInfoVoList = roleInfoVoList;
+	}
+
+	public List<String> getRoleIdList() {
+		return roleIdList;
+	}
+
+	public void setRoleIdList(List<String> roleIdList) {
+		this.roleIdList = roleIdList;
 	}
 }

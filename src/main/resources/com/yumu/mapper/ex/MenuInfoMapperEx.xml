@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yumu.mapper.ex.MenuInfoMapperEx">
   <resultMap id="BaseResultMap" type="com.yumu.dto.MenuInfo">
-    <id column="menu_id" jdbcType="VARCHAR" property="menuId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
     <result column="level" jdbcType="INTEGER" property="level" />
     <result column="hide_flg" jdbcType="INTEGER" property="hideFlg" />
     <result column="state" jdbcType="INTEGER" property="state" />
@@ -17,17 +17,17 @@
   
   <!-- 自定义方法  开始-->
   <resultMap id="qryMenuListMap" type="com.yumu.controller.login.vo.LoginMenuListVo">
-    <id column="menu_id" jdbcType="VARCHAR" property="menuId" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
-    <collection column="{parentId = menu_id}" javaType="java.util.ArrayList" ofType="com.yumu.controller.login.vo.LoginMenuListVo" property="child" select="qryMenuChildList" />
+    <collection column="{parentId = id}" javaType="java.util.ArrayList" ofType="com.yumu.controller.login.vo.LoginMenuListVo" property="child" select="qryMenuChildList" />
   </resultMap>
  
   <!-- 查询有权限菜单 -->
   <select id="qryMenuList" parameterType="java.lang.String" resultMap="qryMenuListMap">
     SELECT
-	  mi.menu_id,
+	  mi.id,
 	  mi.title,
 	  mi.url,
 	  mi.parent_id
@@ -35,7 +35,7 @@
 	  user_info ui
 	  INNER JOIN user_role ur ON ( ui.user_id = ur.user_id AND ur.state=1 )
 	  INNER JOIN role_menu rm ON ( ur.role_id = rm.role_id AND rm.state=1 )
-	  INNER JOIN menu_info mi ON ( rm.menu_id = mi.menu_id AND mi.state=1 AND mi.hide_flg=0) 
+	  INNER JOIN menu_info mi ON ( rm.id = mi.id AND mi.state=1 AND mi.hide_flg=0) 
     WHERE
 	  ui.state =1
 	  AND mi.level=1
@@ -44,7 +44,7 @@
   <!-- 查询有权限菜单-子菜单查询 -->
   <select id="qryMenuChildList" resultType="com.yumu.controller.login.vo.LoginMenuListVo">
     SELECT
-	  mi.menu_id AS menuId,
+	  mi.id AS id,
 	  mi.title AS title,
 	  mi.url AS url,
 	  mi.parent_id AS parentId
@@ -57,19 +57,20 @@
   </select>
 
   <resultMap id="qryAllMenuListMap" type="com.yumu.controller.menu.vo.MenuInfoVo">
-    <id column="menu_id" jdbcType="VARCHAR" property="menuId" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
-    <collection column="{parentId = menu_id}" javaType="java.util.ArrayList" ofType="com.yumu.controller.menu.vo.MenuInfoVo" property="children" select="qryAllMenuChildList" />
+    <collection column="{parentId = id}" javaType="java.util.ArrayList" ofType="com.yumu.controller.menu.vo.MenuInfoVo" property="children" select="qryAllMenuChildList" />
   </resultMap> 
   
   <!-- 查询有权限菜单 -->
   <select id="qryAllMenuList" parameterType="java.lang.String" resultMap="qryAllMenuListMap">
     SELECT
-	  mi.menu_id,
+	  mi.id,
 	  mi.title,
 	  mi.url,
+	  mi.level,
 	  mi.parent_id
     FROM
 	  menu_info mi
@@ -81,9 +82,10 @@
   <!-- 查询有权限菜单-子菜单查询 -->
   <select id="qryAllMenuChildList" resultType="com.yumu.controller.menu.vo.MenuInfoVo">
     SELECT
-	  mi.menu_id AS menuId,
+	  mi.id AS id,
 	  mi.title AS title,
 	  mi.url AS url,
+	  mi.level AS level,
 	  mi.parent_id AS parentId
     FROM
 	  menu_info mi
@@ -92,5 +94,19 @@
 	  AND mi.state = 1
 	  AND mi.level=2
   </select>  
+  
+  <!-- 查询菜单关联角色 -->
+  <select id="qryMenuRoleList" parameterType="java.lang.Integer" resultType="com.yumu.controller.menu.vo.RoleInfoVo">
+    SELECT
+	ri.role_id AS roleId,
+	ri.role_name AS roleName,
+	IF(rm.id IS NULL,false,true) AS checked
+    FROM
+	  menu_info mi
+	  LEFT JOIN role_info ri ON(1=1)
+	  LEFT JOIN role_menu rm ON(ri.role_id=rm.role_id AND mi.id=rm.menu_id)
+    WHERE
+	  mi.id=#{id,jdbcType=INTEGER}
+  </select>
   <!-- 自定义方法  结束-->
 </mapper>

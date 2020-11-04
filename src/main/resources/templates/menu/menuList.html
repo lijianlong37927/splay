@@ -27,23 +27,91 @@
 
 	<script>
 		layui.use([ 'tree', 'util', 'jquery' ], function() {
-			console.info(111);
 			var $ = layui.jquery, util = layui.util, tree = layui.tree;
-			console.info(222);
 			$.ajax({
 				url : "/menu/list/query",
 				contentType : 'application/json',
 				type : "POST",
 				dataType : "json",
 				success : function(data) {
-					console.info(data);
 					if (data.code == 0) {
 						tree.render({
 							elem : '#menuTreeDiv',
 							data : data.data,
-							id : 'treeId',
+							id : 'menuTree',
 							showCheckbox : false,
-							onlyIconControl : true
+							onlyIconControl : true,
+							edit : [ 'add', 'update', 'del' ],
+							accordion : true,
+							click : function(obj) {
+								//console.log(obj.checked); //得到当前节点的展开状态：open、close、normal
+								//console.log(obj.elem); //得到当前节点元素
+								$("#menuDetailDiv").load(
+										"/menu/detail/edit?id="
+												+ obj.data.id);
+							},
+							operate : function(obj) {
+								var type = obj.type; //得到操作类型：add、edit、del
+								var data = obj.data; //得到当前节点的数据
+								var elem = obj.elem; //得到当前节点元素
+
+								//Ajax 操作
+								var id = data.id; //得到节点索引
+								if (type === 'add') { //增加节点
+									console.log(data);
+									$.ajax({
+										url : "/menu/detail/new/submit",
+										contentType : 'application/json',
+										data : JSON.stringify({
+											"parentId" : data.id,
+											"title" : '未命名',
+											"level" : data.level+1
+										}),
+										type : "POST",
+										dataType : "json",
+										success : function(data2) {
+											if (data2.code == 0) {
+												tree.reload('menuTree',{data:data2.data});
+												layer.msg('保存成功', {
+													icon : 1,
+													time : 2000
+												//2秒关闭（如果不配置，默认是3秒）
+												});												
+											} else {
+												layer.alert(data2.msg, function() {
+													layer.closeAll();//关闭所有弹框
+												});
+											}
+										}
+									});
+								} else if (type === 'update') { //修改节点
+									$.ajax({
+										url : "/menu/detail/edit/submit",
+										contentType : 'application/json',
+										data : JSON.stringify({
+											"id" : id,
+											"title" : elem.find('.layui-tree-txt').html(),
+										}),
+										type : "POST",
+										dataType : "json",
+										success : function(data2) {
+											if (data2.code == 0) {
+												layer.msg('保存成功', {
+													icon : 1,
+													time : 2000
+												//2秒关闭（如果不配置，默认是3秒）
+												});
+											} else {
+												layer.alert(data2.msg, function() {
+													layer.closeAll();//关闭所有弹框
+												});
+											}
+										}
+									});
+								} else if (type === 'del') { //删除节点
+
+								}
+							}
 						});
 					} else {
 						layer.alert(data.msg, function() {

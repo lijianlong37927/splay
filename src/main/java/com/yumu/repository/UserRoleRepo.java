@@ -7,12 +7,9 @@ import com.yumu.constant.CommonConst;
 import com.yumu.dto.UserRole;
 import com.yumu.dto.UserRoleExample;
 import com.yumu.mapper.UserRoleMapper;
-import com.yumu.tool.LockTool;
 
 @Repository
 public class UserRoleRepo {
-
-	private final String UPDATEUSERROLE_LOCK_USERID = "UPDATEUSERROLE_LOCK_USERID_";
 
 	@Autowired
 	private UserRoleMapper userRoleMapper;
@@ -39,9 +36,9 @@ public class UserRoleRepo {
 		if (userId == null) {
 			return;
 		}
-		// 加锁防止并发
-		try {
-			LockTool.lock(UPDATEUSERROLE_LOCK_USERID + userId);
+//		// 加锁防止并发
+//		try {
+//			LockTool.lock(LockKeyEnum.userId.getKey() + userId);
 			// 先修改成删除状态
 			UserRole userRoleUD = new UserRole();
 			userRoleUD.setState(CommonConst.STATE_INVALID);
@@ -56,8 +53,8 @@ public class UserRoleRepo {
 				userRoleIS.setRoleId(roleIdList.get(i));
 				userRoleMapper.insertSelective(userRoleIS);
 			}
-		} finally {
-			LockTool.unlock(UPDATEUSERROLE_LOCK_USERID + userId);
-		}
+//		} finally {
+//			LockTool.unlock(LockKeyEnum.userId.getKey() + userId);
+//		}
 	}
 }

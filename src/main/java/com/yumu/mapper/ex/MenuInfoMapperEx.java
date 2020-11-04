@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.yumu.controller.login.vo.LoginMenuListVo;
 import com.yumu.controller.menu.vo.MenuInfoVo;
+import com.yumu.controller.menu.vo.RoleInfoVo;
 
 public interface MenuInfoMapperEx {
 
@@ -22,4 +23,12 @@ public interface MenuInfoMapperEx {
 	 * @return
 	 */
 	List<MenuInfoVo> qryAllMenuList();
+
+	/**
+	 * <p>Title: qryMenuRoleList</p>
+	 * <p>Description: 查询菜单关联角色</p>
+	 * @param id
+	 * @return
+	 */
+	List<RoleInfoVo> qryMenuRoleList(@Param("id") Integer id);
 }

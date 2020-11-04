@@ -62,7 +62,7 @@ public class TokenFilter implements Filter {
 			logger.info("address:[{}],path:[{}]", request.getRemoteAddr(), path);
 			String userId = LocalContext.getRequestContext().getUserId();
 			if (StringUtils.isBlank(userId)) {
-				response.sendRedirect(request.getContextPath());
+				response.sendRedirect("/");
 			} else if (checkPath(userId, path)) {
 				chain.doFilter(servletRequest, servletResponse);
 			} else {

@@ -61,12 +61,10 @@
 			var $ = layui.jquery, form = layui.form, layer = layui.layer;
 			//监听提交
 			form.on('submit(submitButton)', function(data1) {
-				console.info(1);
 				var roleIdList=[];
 				$("input[name='roleId']:checked").each(function(){
 					roleIdList.push($(this).val());
 				});
-				console.info(roleIdList);
 				$.ajax({
 					url : "/user/detail/edit/submit",
 					contentType : 'application/json',
